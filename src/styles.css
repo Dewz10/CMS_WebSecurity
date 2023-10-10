@@ -1,0 +1,35 @@
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #03a96b !important; /* Set your desired background color */
+    color: white; /* Set your desired text color */
+  }
+
+body:not(.layout-fixed) .main-sidebar {
+  position: fixed;
+}
+
+body {
+  font-family: 'Noto Sans Thai';
+}
+
+.navbar-white {
+  background-color: #03a96b !important;
+  color: white;
+}
+
+#homePageTag {
+  color: #03a96b !important;
+}
+
+#homePageTagHeader {
+  color: #4E5155;
+}
+
+.fa-power-off:before {
+  content: "\f011";
+  color: rgb(203, 241, 227);
+}
+
+.fa-bars:before {
+  content: "\f0c9";
+  color: rgb(203, 241, 227);
+}

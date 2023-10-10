@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <!-- Add meta tags, CSS links, and other head content here -->
+    <title>React App</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href='https://fonts.googleapis.com/css?family=Noto Sans Thai' rel='stylesheet'>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <!-- IonIcons -->
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
+    <!-- Form Page-->
+    <!-- daterange picker -->
+    <link
+      rel="stylesheet"
+      href="../../plugins/daterangepicker/daterangepicker.css"
+    />
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link
+      rel="stylesheet"
+      href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css"
+    />
+    <!-- Bootstrap Color Picker -->
+    <link
+      rel="stylesheet"
+      href="../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css"
+    />
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link
+      rel="stylesheet"
+      href="../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css"
+    />
+    <!-- Select2 -->
+    <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css" />
+    <link
+      rel="stylesheet"
+      href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"
+    />
+    <!-- Bootstrap4 Duallistbox -->
+    <link
+      rel="stylesheet"
+      href="../../plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css"
+    />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css" />
+  </head>
+  <body class="hold-transition sidebar-mini">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <div class="wrapper"></div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Include Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.1/umd/popper.min.js"></script>
+    <!-- AdminLTE -->
+    <script src="dist/js/adminlte.js"></script>
+
+    <!-- DataTables & Plugins -->
+    <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="../../plugins/jszip/jszip.min.js"></script>
+    <script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Your custom scripts for form handling, etc. -->
+    <script src="../../plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+    <script src="../../plugins/moment/moment.min.js"></script>
+    <script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
+    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script src="../../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+    <!-- Page specific script -->
+    <script>
+      // Use $document.ready to wait for the DOM to be ready
+      $(function () {
+        bsCustomFileInput.init();
+        $(".select2").select2();
+        //Date picker
+        $("#reservationdate").datetimepicker({
+          format: "L",
+        });
+        $("#reservationdate1").datetimepicker({
+          format: "L",
+        });
+
+        //Date and time picker
+        $("#reservationdatetime").datetimepicker({
+          icons: { time: "far fa-clock" },
+        });
+      });
+    </script>
+  </body>
+</html>
