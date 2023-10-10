@@ -8,6 +8,11 @@ function Login({ onLogin, authenticatedUser }) {
   const [signInClicked, setSignInClicked] = useState(false);
   const navigate = useNavigate();
 
+  const handleReloadAndNavigate = (url) => {
+    window.location.reload();
+    window.location.href = url;
+  };
+
   const handleLogin = () => {
     setSignInClicked(true);
     const isAuthenticated = onLogin(username, password, selectedRole);
@@ -16,16 +21,16 @@ function Login({ onLogin, authenticatedUser }) {
     if (true) {
       switch (selectedRole) {
         case "student":
-          navigate("/news");
+          handleReloadAndNavigate("/news");
           break;
         case "company":
-          navigate("/comregisters");
+          handleReloadAndNavigate("/comregisters");
           break;
         case "admin":
-          navigate("/openrounds");
+          handleReloadAndNavigate("/openrounds");
           break;
         default:
-          navigate("/login");
+          handleReloadAndNavigate("/login");
       }
     } else {
       // Handle authentication failure (e.g., display an error message)
