@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Routes, Route, Outlet, useLocation, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Menu from "./components/Menu";
 import News from "./views/students/News";
@@ -14,11 +14,10 @@ import CheckStatusCompany from "./views/company/CheckStatusCompany";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = (username, password) => {
-    // Perform authentication logic here based on username and password.
-    // For example, you can use a switch statement or if-else conditions.
-    // Set the authenticated user based on the authentication result.
+    // Your authentication logic here
     if (username === "stdtest001" && password === "stdtest001") {
       setAuthenticatedUser("student");
     } else if (username === "comtest001" && password === "comtest001") {
@@ -26,26 +25,44 @@ function App() {
     } else if (username === "admintest001" && password === "admintest001") {
       setAuthenticatedUser("admin");
     } else {
-      // Invalid credentials, handle accordingly.
       setAuthenticatedUser(null);
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authenticatedUser");
+    setAuthenticatedUser(null);
+  };
+
+  useEffect(() => {
+    // Check if there is no authenticated user in state and localStorage
+    if (authenticatedUser === null) {
+      const storedUser = localStorage.getItem("authenticatedUser");
+  
+      if (storedUser===null) {
+        // Set the authenticated user from localStorage
+        navigate("/login");
+      } else {
+        setAuthenticatedUser(storedUser);
+      }
+    }
+  }, [authenticatedUser, navigate, setAuthenticatedUser]);
+  
+  
+
   return (
     <div>
       <Routes>
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} authenticatedUser={authenticatedUser}/>} />
 
         {authenticatedUser === "student" && (
           <Route
             path="/"
             element={
               <>
-                <div>
-                  <Header />
-                  <Menu />
-                  <Outlet />
-                </div>
+                <Header selectedRole={authenticatedUser} onLogout={handleLogout}/>
+                <Menu selectedRole={authenticatedUser} />
+                <Outlet />
               </>
             }
           >
@@ -60,11 +77,9 @@ function App() {
             path="/"
             element={
               <>
-                <div>
-                  <Header />
-                  <Menu />
-                  <Outlet />
-                </div>
+                <Header selectedRole={authenticatedUser} onLogout={handleLogout}/>
+                <Menu selectedRole={authenticatedUser} />
+                <Outlet />
               </>
             }
           >
@@ -78,11 +93,9 @@ function App() {
             path="/"
             element={
               <>
-                <div>
-                  <Header />
-                  <Menu />
-                  <Outlet />
-                </div>
+                <Header selectedRole={authenticatedUser} onLogout={handleLogout}/>
+                <Menu selectedRole={authenticatedUser} />
+                <Outlet />
               </>
             }
           >
@@ -91,8 +104,6 @@ function App() {
             <Route path="/addcompany" element={<AddCompany />} />
           </Route>
         )}
-
-        {authenticatedUser === null && <Navigate to="/login" />}
       </Routes>
     </div>
   );

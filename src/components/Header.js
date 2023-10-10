@@ -1,9 +1,21 @@
 import React from "react";
 
-function Header() {
+function Header({ selectedRole, onLogout }) {
+  console.log(selectedRole);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authenticatedUser");
+    onLogout();
+  };
+
+  const headerText = {
+    admin: "ระบบจัดการยื่นคำร้องขอฝึกงาน มหาวิทยาลัยเกษตรศาสตร์",
+    company: "ระบบยื่นคำร้องสำหรับรับสมัครนิสิตฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน",
+    student: "ระบบยื่นคำร้องขอฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน"
+  }[selectedRole];
+
   return (
     <nav className="main-header navbar navbar-expand navbar-white navbar-light">
-      {/* Left navbar links */}
       <ul className="navbar-nav">
         <li className="nav-item">
           <a className="nav-link" data-widget="pushmenu" href="#" role="button">
@@ -14,18 +26,17 @@ function Header() {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
-          <p style={{color: 'white'}}>ระบบยื่นคำร้องขอฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน</p>
+            <p style={{ color: "white" }}>{headerText}</p>
           </a>
         </li>
       </ul>
-      {/* Right navbar links */}
       <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="fas fa-power-off" />
           </a>
           <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="/" className="dropdown-item dropdown-footer">
+            <a href="/" className="dropdown-item dropdown-footer" onClick={handleLogout}>
               Log Out
             </a>
           </div>

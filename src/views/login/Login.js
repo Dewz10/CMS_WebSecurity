@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Login({ onLogin }) {
+function Login({ onLogin, authenticatedUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [selectedRole, setSelectedRole] = useState("student");
+  const [signInClicked, setSignInClicked] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Call the onLogin function and pass the entered username and password.
-    onLogin(username, password, selectedRole);
+    setSignInClicked(true);
+    const isAuthenticated = onLogin(username, password, selectedRole);
+    console.log(isAuthenticated);
+    localStorage.setItem("authenticatedUser", selectedRole);
+    if (true) {
+      switch (selectedRole) {
+        case "student":
+          navigate("/news");
+          break;
+        case "company":
+          navigate("/comregisters");
+          break;
+        case "admin":
+          navigate("/openrounds");
+          break;
+        default:
+          navigate("/login");
+      }
+    } else {
+      // Handle authentication failure (e.g., display an error message)
+    }
   };
+  
+
+  useEffect(() => {
+    if (signInClicked && authenticatedUser === null) {
+      navigate("/login");
+    }
+  }, [signInClicked, authenticatedUser, navigate]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center", marginTop: 150 }}>
@@ -61,10 +90,10 @@ function Login({ onLogin }) {
             </div>
             <div className="row">
               <div className="col-8">
-                <div className="icheck-primary">
+                {/* <div className="icheck-primary">
                   <input type="checkbox" id="remember" />
                   <label htmlFor="remember">Remember Me</label>
-                </div>
+                </div> */}
               </div>
               <div className="col-4">
                 <button
