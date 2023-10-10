@@ -3,10 +3,10 @@ import { NavLink } from "react-router-dom";
 import "../../src/styles.css";
 
 function Menu({ selectedRole }) {
-  console.log(selectedRole);
+
   const handleReloadAndNavigate = (url) => {
     window.location.reload();
-    window.location.href = url; // เปลี่ยนไปยัง URL ที่คุณต้องการหลังจากโหลดใหม่
+    window.location.href = url;
   };
 
   let userName = "";
