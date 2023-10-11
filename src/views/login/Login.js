@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import './login.css'
+import kuLogo from "../../assets/ku-logo.png";
+
 
 function Login({ onLogin, authenticatedUser }) {
   const [username, setUsername] = useState("");
@@ -45,21 +48,19 @@ function Login({ onLogin, authenticatedUser }) {
   }, [signInClicked, authenticatedUser, navigate]);
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: 150 }}>
-      <div className="login-box">
-        <div className="card card-outline card-primary">
-          <div className="card-header text-center">
-            <a href="../../index2.html" className="h1">
-              <b>CMS</b>System
-            </a>
+    <div className="login-frame">
+      <div className="logo">
+      <img src={kuLogo} alt="ku-logo" width="110px" height="130" />
+      </div>
+          <div className="label-login">
+            <h2>เข้าสู่ระบบยื่นคำร้องฝึกงาน</h2>
           </div>
           <div className="card-body">
-            <p className="login-box-msg">Sign in to start your session</p>
             <div className="input-group mb-3">
               <input
                 type="email"
                 className="form-control"
-                placeholder="Email"
+                placeholder="Username"
                 onChange={(e) => setUsername(e.target.value)}
               />
               <div className="input-group-append">
@@ -93,31 +94,28 @@ function Login({ onLogin, authenticatedUser }) {
                 <option value="admin">Admin</option>
               </select>
             </div>
-            <div className="row">
               <div className="col-8">
                 {/* <div className="icheck-primary">
                   <input type="checkbox" id="remember" />
                   <label htmlFor="remember">Remember Me</label>
                 </div> */}
               </div>
-              <div className="col-4">
+              <div className="input-div">
                 <button
-                  className="btn btn-primary btn-block"
+                  className="btn-login"
                   onClick={handleLogin}
                 >
-                  Sign In
+                  เข้าสู่ระบบ
                 </button>
               </div>
-            </div>
-            <p className="mb-0">
+            {/* <p className="mb-0">
               <a href="register.html" className="text-center">
                 Register a new membership
               </a>
-            </p>
+            </p> */}
           </div>
         </div>
-      </div>
-    </div>
+
   );
 }
 

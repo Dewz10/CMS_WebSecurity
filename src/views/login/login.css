@@ -1,0 +1,69 @@
+@font-face {
+    font-family: kanit;
+    src: url('../../assets/Kanit-Regular.ttf');
+}
+
+
+
+.login-frame{
+    height: 600px;
+    position: fixed;
+    width: 450px;
+    border: 1px solid #D7D7D7;
+    border-radius: 32px;
+    position: fixed;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.logo{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center;
+}
+    
+.label-login{
+    font-family: kanit;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.input-div{
+    display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+}
+.input-login{
+    height: 40px;
+    width: 350px;
+    border-radius: 6px;
+    border: 1px solid #D7D7D7;
+    margin-top: 5px;
+    position: relative;
+    font-family: kanit;
+    padding: 0px 10px;
+}
+.btn-login{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    margin-top: 70px;
+    font-family: kanit;
+    background-color: #02BC77;
+    border: #D7D7D7;
+    font-size: 15px;
+    color: white;
+    max-width: 100%;
+}
+.input-login:hover {
+    background-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+  }
+
+.btn-login:hover{
+    background-color:#026b45;
+    cursor: pointer;
+}
