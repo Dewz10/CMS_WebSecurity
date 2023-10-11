@@ -41,6 +41,7 @@ function CheckStatus() {
                     <th>วันที่</th>
                     <th>บริษัท</th>
                     <th>สถานะ</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,7 @@ function CheckStatus() {
                     <td>
                       <span className="badge bg-success">ผ่านการพิจารณา</span>
                     </td>
+                    <td>edit</td>
                   </tr>
                   <tr>
                     <td>2</td>
@@ -61,6 +63,7 @@ function CheckStatus() {
                         อยู่ระหว่างการพิจารณา
                       </span>
                     </td>
+                    <td>edit</td>
                   </tr>
                   <tr>
                     <td>1</td>
@@ -69,6 +72,7 @@ function CheckStatus() {
                     <td>
                       <span className="badge bg-danger">ไม่ผ่านการพิจารณา</span>
                     </td>
+                    <td>edit</td>
                   </tr>
                 </tbody>
               </table>
