@@ -1,4 +1,5 @@
 import React from "react";
+import formpdf from '../../assets/แบบฟอร์มสหกิจศึกษา 2566.pdf'
 
 function Form() {
   return (
@@ -393,7 +394,10 @@ function Form() {
                       </div>
                     </div>
                     <div className="form-group">
-                      <a href="https://kasets.art/0Ctjyf">
+                      <a href={formpdf}
+                          download="แบบฟอร์มคำร้องขอไปสหกิจ"
+                          target="_blank"
+                          rel="noreferrer">
                         ดาวน์โหลดไฟล์คำร้อง
                       </a>
                     </div>
