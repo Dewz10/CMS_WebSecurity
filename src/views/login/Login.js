@@ -53,7 +53,7 @@ function Login({ onLogin, authenticatedUser }) {
       <img src={kuLogo} alt="ku-logo" width="110px" height="130" />
       </div>
           <div className="label-login">
-            <h2>เข้าสู่ระบบยื่นคำร้องฝึกงาน</h2>
+            <h2 style={{fontSize: 20}}>เข้าสู่ระบบยื่นคำร้องฝึกงาน</h2>
           </div>
           <div className="card-body">
             <label htmlFor="email_input">บัญชีผู้ใช้</label>
@@ -86,7 +86,7 @@ function Login({ onLogin, authenticatedUser }) {
                 </div>
               </div>
             </div>
-            <div className="mb-3">
+            <div className="">
               <label>Select Role:</label>
               <select
                 className="form-control"
