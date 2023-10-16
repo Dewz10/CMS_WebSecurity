@@ -1,22 +1,27 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../../src/styles.css";
 
-function Menu({ selectedRole }) {
+function Menu({ selectedRole, userData }) {
+  const navigate = useNavigate(); // ดึงใช้งาน useNavigate
 
+  console.log(userData);
   const handleReloadAndNavigate = (url) => {
-    window.location.reload();
-    window.location.href = url;
+    navigate(url);
   };
 
   let userName = "";
 
-  if (selectedRole === "student") {
-    userName = "นายใจดี สบายสุข";
-  } else if (selectedRole === "company") {
-    userName = "บริษัท xxxxx จำกัด";
-  } else if (selectedRole === "admin") {
-    userName = "Admin";
+  if (userData) {
+    const { username } = userData; // แก้เป็น username
+
+    if (selectedRole === "user") {
+      userName = username; // แก้ให้ใช้ username แทน
+    } else if (selectedRole === "company") {
+      userName = "บริษัท xxxxx จำกัด";
+    } else if (selectedRole === "admin") {
+      userName = "Admin";
+    }
   }
 
   return (
@@ -37,22 +42,6 @@ function Menu({ selectedRole }) {
           </div>
         </div>
 
-        <div className="form-inline">
-          <div className="input-group" data-widget="sidebar-search">
-            <input
-              className="form-control form-control-sidebar"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <div className="input-group-append">
-              <button className="btn btn-sidebar">
-                <i className="fas fa-search fa-fw" />
-              </button>
-            </div>
-          </div>
-        </div>
-
         <nav className="mt-2">
           <ul
             className="nav nav-pills nav-sidebar flex-column"
@@ -60,22 +49,34 @@ function Menu({ selectedRole }) {
             role="menu"
             data-accordion="false"
           >
-            {selectedRole === "student" && (
+            {selectedRole === "user" && (
               <>
                 <li className="nav-item">
-                  <NavLink to="/news" className="nav-link" onClick={() => handleReloadAndNavigate("/news")}>
+                  <NavLink
+                    to="/news"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/news")}
+                  >
                     <i className="nav-icon far fa-newspaper" />
                     <p>ข่าวสารนิสิต</p>
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/register" className="nav-link" onClick={() => handleReloadAndNavigate("/register")}>
+                  <NavLink
+                    to="/register"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/register")}
+                  >
                     <i className="nav-icon far fa-file" />
                     <p>ฟอร์มคำร้อง</p>
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/status" className="nav-link" onClick={() => handleReloadAndNavigate("/status")}>
+                  <NavLink
+                    to="/status"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/status")}
+                  >
                     <i className="nav-icon fas fa-clipboard-check" />
                     <p>ตรวจสอบผล</p>
                   </NavLink>
@@ -86,13 +87,21 @@ function Menu({ selectedRole }) {
             {selectedRole === "company" && (
               <>
                 <li className="nav-item">
-                  <NavLink to="/comregisters" className="nav-link" onClick={() => handleReloadAndNavigate("/comregisters")}>
+                  <NavLink
+                    to="/comregisters"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/comregisters")}
+                  >
                     <i className="nav-icon far fa-file" />
                     <p>ลงทะเบียน</p>
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/companystatus" className="nav-link" onClick={() => handleReloadAndNavigate("/companystatus")}>
+                  <NavLink
+                    to="/companystatus"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/companystatus")}
+                  >
                     <i className="nav-icon fas fa-clipboard-check" />
                     <p>ตรวจสอบผล</p>
                   </NavLink>
@@ -103,19 +112,31 @@ function Menu({ selectedRole }) {
             {selectedRole === "admin" && (
               <>
                 <li className="nav-item">
-                  <NavLink to="/openrounds" className="nav-link" onClick={() => handleReloadAndNavigate("/openrounds")}>
+                  <NavLink
+                    to="/openrounds"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/openrounds")}
+                  >
                     <i className="nav-icon far fa-newspaper" />
                     <p>เปิดรอบ</p>
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/managerequests" className="nav-link" onClick={() => handleReloadAndNavigate("/managerequests")}>
+                  <NavLink
+                    to="/managerequests"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/managerequests")}
+                  >
                     <i className="nav-icon far fa-file" />
                     <p>จัดการคำร้อง</p>
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/addcompany" className="nav-link" onClick={() => handleReloadAndNavigate("/addcompany")}>
+                  <NavLink
+                    to="/addcompany"
+                    className="nav-link"
+                    onClick={() => handleReloadAndNavigate("/addcompany")}
+                  >
                     <i className="nav-icon fas fa-clipboard-check" />
                     <p>เพิ่มบริษัท</p>
                   </NavLink>

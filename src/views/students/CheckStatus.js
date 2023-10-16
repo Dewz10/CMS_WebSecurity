@@ -1,6 +1,10 @@
 import React from "react";
 
-function CheckStatus() {
+function CheckStatus({ selectedRole }) {
+  if (selectedRole !== "user") {
+    return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
+  }
+  
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}

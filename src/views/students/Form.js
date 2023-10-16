@@ -1,7 +1,11 @@
 import React from "react";
 import formpdf from '../../assets/แบบฟอร์มสหกิจศึกษา 2566.pdf'
 
-function Form() {
+function Form({ selectedRole }) {
+  if (selectedRole !== "user") {
+    return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
+  }
+  
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -270,6 +274,7 @@ function Form() {
                       <label>สถานประกอบการ</label>
                       <select
                         className="form-control select2"
+                        id="select2-input-company"
                         style={{ width: "100%" }}
                       >
                         <option selected="selected">Agoda</option>

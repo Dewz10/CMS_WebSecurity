@@ -124,18 +124,18 @@ function FormCompany() {
                           <label>ระยะเวลาตั้งแต่</label>
                           <div
                             class="input-group date"
-                            id="reservationdate"
+                            id="reservationdate2"
                             data-target-input="nearest"
                           >
                             <input
                               type="text"
                               id="start_date"
                               class="form-control datetimepicker-input"
-                              data-target="#reservationdate"
+                              data-target="#reservationdate2"
                             />
                             <div
                               class="input-group-append"
-                              data-target="#reservationdate"
+                              data-target="#reservationdate2"
                               data-toggle="datetimepicker"
                             >
                               <div class="input-group-text">
@@ -150,18 +150,18 @@ function FormCompany() {
                           <label>ถึง</label>
                           <div
                             class="input-group date"
-                            id="reservationdate1"
+                            id="reservationdate3"
                             data-target-input="nearest"
                           >
                             <input
                               type="text"
                               id="end_date"
                               class="form-control datetimepicker-input"
-                              data-target="#reservationdate1"
+                              data-target="#reservationdate3"
                             />
                             <div
                               class="input-group-append"
-                              data-target="#reservationdate1"
+                              data-target="#reservationdate3"
                               data-toggle="datetimepicker"
                             >
                               <div class="input-group-text">

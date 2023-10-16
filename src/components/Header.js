@@ -1,17 +1,17 @@
 import React from "react";
 
 function Header({ selectedRole, onLogout }) {
-  console.log(selectedRole);
-
   const handleLogout = () => {
-    localStorage.removeItem("authenticatedUser");
+    // ลบ access_token จาก localStorage
+    localStorage.removeItem("access_token");
     onLogout();
   };
 
   const headerText = {
     admin: "ระบบจัดการยื่นคำร้องขอฝึกงาน มหาวิทยาลัยเกษตรศาสตร์",
-    company: "ระบบยื่นคำร้องสำหรับรับสมัครนิสิตฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน",
-    student: "ระบบยื่นคำร้องขอฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน"
+    company:
+      "ระบบยื่นคำร้องสำหรับรับสมัครนิสิตฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน",
+    user: "ระบบยื่นคำร้องขอฝึกงาน มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตกำแพงแสน",
   }[selectedRole];
 
   return (
@@ -36,7 +36,11 @@ function Header({ selectedRole, onLogout }) {
             <i className="fas fa-power-off" />
           </a>
           <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="/" className="dropdown-item dropdown-footer" onClick={handleLogout}>
+            <a
+              href="/"
+              className="dropdown-item dropdown-footer"
+              onClick={handleLogout}
+            >
               Log Out
             </a>
           </div>
