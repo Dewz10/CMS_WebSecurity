@@ -13,8 +13,8 @@ function Menu({ selectedRole, userData }) {
   let userName = "";
 
   if (userData) {
-    const { username } = userData; // แก้เป็น username
-
+    const { username } = userData.data; // แก้เป็น username
+    console.log(userData)
     if (selectedRole === "user") {
       userName = username; // แก้ให้ใช้ username แทน
     } else if (selectedRole === "company") {
