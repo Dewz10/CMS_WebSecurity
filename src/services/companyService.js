@@ -1,12 +1,11 @@
 import axios from 'axios'
 
 const API_BASE_URL = 'http://localhost:3000/internship'
-const token = localStorage.getItem('access_token')
-
-
-const getAllRequest = async () => {
+ const token = localStorage.getItem('access_token')
+const getAllCompany = async () => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/request/user`, {
+       
+        const response = await axios.get(`${API_BASE_URL}/company`, {
             headers: {
                 Authorization: 'Bearer '+token,
             }
@@ -17,5 +16,4 @@ const getAllRequest = async () => {
         throw error;
     }
 }
-
-export {getAllRequest}
+export { getAllCompany }

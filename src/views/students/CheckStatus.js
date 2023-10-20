@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getAllRequest } from "../../services/internshipService";
 
 function CheckStatus({ selectedRole }) {
+  const [request,setRequest] = useState([])
+  useEffect(()=>{
+    getAllRequest()
+    .then(res => setRequest(res.data))
+    .catch(err => console.error(err))
+  },[])
   if (selectedRole !== "user") {
     return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
   }
@@ -49,35 +56,33 @@ function CheckStatus({ selectedRole }) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>2</td>
-                    <td>10-10-2023</td>
-                    <td>Agoda</td>
-                    <td>
-                      <span className="badge bg-success">ผ่านการพิจารณา</span>
-                    </td>
-                    <td>edit</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>10-09-2023</td>
-                    <td>True Corporation</td>
-                    <td>
-                      <span className="badge bg-warning">
-                        อยู่ระหว่างการพิจารณา
-                      </span>
-                    </td>
-                    <td>edit</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>10-08-2023</td>
-                    <td>NEC CORPORATION</td>
-                    <td>
-                      <span className="badge bg-danger">ไม่ผ่านการพิจารณา</span>
-                    </td>
-                    <td>edit</td>
-                  </tr>
+                    {
+                      request?.map((data,i)=>{
+                        let cn 
+                        let message
+                        if(!data.requestStatus.localeCompare("Pass")){
+                          cn = "badge bg-success"
+                          message = "ผ่านการพิจารณา"
+                        }else if(!data.requestStatus.localeCompare("Not pass")){
+                          cn = "badge bg-danger"
+                          message = "ไม่ผ่านการพิจารณา"
+                        }else if(!data.requestStatus.localeCompare("Waiting to consider")){
+                          cn = "badge bg-warning"
+                          message = "อยู่ระหว่างการพิจารณา"
+                        }
+                        return (
+                          <tr key={i}>
+                            <td>{data.applicationRound.name}</td>
+                            <td>10-10-2023</td>
+                            <td>{data.company.name}</td>
+                            <td>
+                            <span className={cn}>{message}</span>
+                            </td>
+                            <td>edit</td>
+                          </tr>
+                        )
+                      })
+                    }
                 </tbody>
               </table>
             </div>

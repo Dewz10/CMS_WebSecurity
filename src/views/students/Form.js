@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import formpdf from '../../assets/แบบฟอร์มสหกิจศึกษา 2566.pdf'
+import { getAllCompany } from "../../services/companyService";
+import axios from "axios";
+
 
 function Form({ selectedRole }) {
+  const [company,setCompany] = useState([])
+  useEffect(()=>{
+    getAllCompany()
+    .then(res => setCompany(res.data))
+    .catch(err => console.error(err))
+  },[])
+  const [profile,setProfile] = useState([])
+  useEffect(()=>{
+    axios.get('http://localhost:3000/auth/profile',{
+      headers: {
+        Authorization: 'Bearer '+localStorage.getItem('access_token')
+      }
+    },[])
+    .then(res => setProfile(res.data))
+    .catch(err => console.error(err))
+  },[])
   if (selectedRole !== "user") {
     return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
   }
@@ -63,6 +82,7 @@ function Form({ selectedRole }) {
                         className="form-control"
                         id="std-id"
                         placeholder="รหัสนิสิต"
+                        value={profile?.data?.username.slice(1)}
                       />
                     </div>
                     {/* <div classname="form-group" style={{display: 'flex', marginBottom: '0.75rem'}}>
@@ -142,6 +162,7 @@ function Form({ selectedRole }) {
                           className="form-control"
                           id="firstname"
                           placeholder="ชื่อ"
+                          value={profile?.data?.firstName}
                         />
                       </div>
                       <div className="col-4">
@@ -151,6 +172,7 @@ function Form({ selectedRole }) {
                           className="form-control"
                           id="lastname"
                           placeholder="นามสกุล"
+                          value={profile?.data?.lastName}
                         />
                       </div>
                     </div>
@@ -277,8 +299,13 @@ function Form({ selectedRole }) {
                         id="select2-input-company"
                         style={{ width: "100%" }}
                       >
-                        <option selected="selected">Agoda</option>
-                        <option>True cooperation</option>
+                        {
+                          company?.map((data,i)=>{
+                            return (<option key={i} value={data.id} name={data.name} id={data.id}>{data.name}</option>)
+                          })
+                        }
+                        {/* <option selected="selected">Agoda</option>
+                        <option>True cooperation</option> */}
                       </select>
                     </div>
                     <div className="form-group">
