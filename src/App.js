@@ -16,7 +16,7 @@ import axios from "axios";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
