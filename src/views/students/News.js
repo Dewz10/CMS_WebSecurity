@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios'
 
 function News() {
-  const [round,setRound] = useState([])
+  const [rounds,setRounds] = useState([])
   useEffect(()=>{
     axios.get('http://localhost:3000/internship/application',{
       headers: {
         Authorization: 'Bearer '+localStorage.getItem('access_token')
       }
     })
-    .then(res => setRound(res.data.data))
+    .then(res => setRounds(res.data.data))
     .catch(err => console.error(err))
-  },[]) 
+  },[])
+  const [round,setRound] = useState()
+  useEffect(()=>setRound(rounds[rounds.length-1]))
   return (
     <div className="content-wrapper">
       <div className="content-header">
@@ -37,37 +39,33 @@ function News() {
       <hr class="d-block container-m-nx mt-0 mb-4"></hr>
       <br></br>
       <div className="content">
-        {
-          round?.map((data,i)=>{
-            let item = round[round.length - 1]
-  
-            console.log(item)
-            if(!item.applicationStatus.localeCompare("Open")){
-              return (
-                <div>
-                  <h1 key={i}>{data.name}</h1>
-                </div>
-              )
-            }
-            else if(!item.applicationStatus.localeCompare("Considering")){
-              return (
-                <div>
-                  <h1>อยู่ระหว่างการพิจารณา</h1>
-                </div>
-              )
-            }
-            else if(!item.applicationStatus.localeCompare("Close")){
-              return (
-                <div>
-                  <h1>ไม่มีประกาศ ณ ขณะนี้</h1>
-                </div>
-              )
-            }
-          })  
-        }
+        <CheckStatus status={round?.applicationStatus} round={round}/>
       </div>
     </div>
   );
+}
+
+function CheckStatus(props){
+  const status = props.status
+  const round = props.round
+  if(status==="Open"){
+    return (
+      <div>
+        <h1>{round?.name}</h1>
+        <h1>เปิดอยู่ ณ ขณะนี้</h1>
+      </div>
+    )
+  }else if(status==="Considering"){
+    return (
+      <div>
+        <h1>{round?.name}</h1>
+        <h1>อยู่ระหว่างการพิจารณา</h1>
+      </div>
+    )
+  }
+  return (
+    <h1>ไม่มีประกาศ ณ ขณะนี้</h1>
+  )
 }
 
 export default News;

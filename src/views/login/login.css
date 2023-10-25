@@ -31,8 +31,8 @@
 
 .input-div{
     display: flex;
-  justify-content: center; /* Horizontal centering */
-  align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
 }
 .input-login{
     height: 40px;

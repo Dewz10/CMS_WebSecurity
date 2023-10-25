@@ -1,0 +1,29 @@
+
+@font-face {
+    font-family: kanit;
+    src: url('./Kanit-Regular.ttf');
+  }
+  
+  
+  .nf-frame{
+    max-width: 100%;
+    width: 800px;
+    height: 500px;
+    border: 1px solid #D7D7D7;
+    border-radius: 32px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .text{
+    font-family: kanit;
+    font-size: 50px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .logo-frame{
+    margin-top: 50px;
+  }
