@@ -13,15 +13,9 @@ function Menu({ selectedRole, userData }) {
   let userName = "";
 
   if (userData) {
-    let username = userData.data?.username; // แก้เป็น username
+    let username = userData.data.username;
     console.log(userData)
-    if (selectedRole === "user") {
-      userName = username; // แก้ให้ใช้ username แทน
-    } else if (selectedRole === "company") {
-      userName = "บริษัท xxxxx จำกัด";
-    } else if (selectedRole === "admin") {
-      userName = "Admin";
-    }
+    userName = username.slice(1);
   }
 
   return (
