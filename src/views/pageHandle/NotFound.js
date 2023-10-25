@@ -10,7 +10,6 @@ const NotFound = () => {
               <img src={notfound} width="300px" height="300px"/>
             </div>
             ไม่พบหน้าที่คุณกำลังหา
-    
           </div>
         </div>
       )
