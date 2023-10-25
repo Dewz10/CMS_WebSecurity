@@ -81,7 +81,7 @@ function Login({ onLogin }) {
         <div className="submit-button">
           <button
             type="button"
-            className="btn btn-block btn-primary"
+            className="btn-login"
             onClick={handleLogin}
           >
             เข้าสู่ระบบ

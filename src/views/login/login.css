@@ -6,7 +6,8 @@
 
 
 .login-frame{
-    max-width: 90%;
+    max-width: 100%;
+    min-width: 400px;
     border: 1px solid #D7D7D7;
     border-radius: 32px;
     position: absolute;
