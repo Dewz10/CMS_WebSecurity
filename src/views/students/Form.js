@@ -45,13 +45,11 @@ function MyForm({ selectedRole }) {
   const [paymentAmount, setPaymentAmount] = useState("");
   const [file, setFile] = useState(null);
 
-  // Form submission status
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // Create a FormData object to send the file
     const formData = new FormData();
     formData.append("requestDate", new Date().toISOString());
     formData.append("phone", phone);
@@ -173,7 +171,7 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="ชื่อ"
-                        value={profile.data?.firstName}
+                        value={profile?.data?.firstName}
                         disabled
                       />
                     </Form.Group>
@@ -191,7 +189,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="เบอร์โทรศัพท์"
-                        value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                       />
                     </Form.Group>
@@ -203,7 +200,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="Facebook"
-                        value={facebookName}
                         onChange={(e) => setFacebookName(e.target.value)}
                       />
                     </Form.Group>
@@ -215,7 +211,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="ตำแหน่งที่ไปฝึกงาน/สหกิจศึกษา"
-                        value={internshipPosition}
                         onChange={(e) => setInternshipPosition(e.target.value)}
                       />
                     </Form.Group>
@@ -230,7 +225,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="ระบุชื่อของผู้ที่จะให้ภาควิชาฯออกหนังสือ ขอความอนุเคราะห์ฝึกงาน/สหกิจ"
-                        value={requesterName}
                         onChange={(e) => setRequesterName(e.target.value)}
                       />
                     </Form.Group>
@@ -245,7 +239,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="ระบุตำแหน่งของผู้ที่จะให้ภาควิชาฯ ออกหนังสือขอความอนุเคราะห์ฝึกงาน/สหกิจ"
-                        value={requesterPosition}
                         onChange={(e) => setRequesterPosition(e.target.value)}
                       />
                     </Form.Group>
@@ -290,7 +283,7 @@ function MyForm({ selectedRole }) {
                         controlId="other_accommodation"
                       >
                         <Form.Label>กรณีอื่นๆ</Form.Label>
-                        <Form.Control type="text" placeholder="กรณีอื่นๆ" />
+                        <Form.Control type="text" placeholder="กรณีอื่นๆ" onChange={(e) => setAccommodationValue(e.target.value)}/>
                       </Form.Group>
                     )}
                   </div>
@@ -302,7 +295,6 @@ function MyForm({ selectedRole }) {
                       <Form.Label>สถานประกอบการ</Form.Label>
                       <Form.Select
                         style={{ width: "100%" }}
-                        value={selectedCompany}
                         onChange={(e) => setSelectedCompany(e.target.value)}
                       >
                         {company.map((data) => (
@@ -320,7 +312,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="ชื่อผู้ประสานงาน"
-                        value={coordinatorName}
                         onChange={(e) => setCoordinatorName(e.target.value)}
                       />
                     </Form.Group>
@@ -332,7 +323,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="โทร"
-                        value={coordinatorPhone}
                         onChange={(e) => setCoordinatorPhone(e.target.value)}
                       />
                     </Form.Group>
@@ -344,7 +334,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="email"
                         placeholder="E-mail"
-                        value={coordinatorEmail}
                         onChange={(e) => setCoordinatorEmail(e.target.value)}
                       />
                     </Form.Group>
@@ -385,7 +374,6 @@ function MyForm({ selectedRole }) {
                       <Form.Control
                         type="text"
                         placeholder="จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ ไม่มีค่าตอบแทน)"
-                        value={paymentAmount}
                         onChange={(e) => setPaymentAmount(e.target.value)}
                       />
                     </Form.Group>
