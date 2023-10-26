@@ -13,7 +13,7 @@ function Menu({ selectedRole, userData }) {
   let userName = "";
 
   if (userData) {
-    let username = userData.data.username;
+    let username = userData?.data?.username;
     console.log(userData)
     userName = username.slice(1);
   }
