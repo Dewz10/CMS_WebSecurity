@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'
-import Countdown from 'react-countdown';
-import Count from "../../components/Count";
-
-
 
 function News() {
   const [rounds,setRounds] = useState([])
@@ -18,7 +14,6 @@ function News() {
   },[])
   const [round,setRound] = useState()
   useEffect(()=>setRound(rounds[rounds.length-1]))
-  console.log(round?.considerationDate)
   return (
     <div className="content-wrapper">
       <div className="content-header">
@@ -45,7 +40,6 @@ function News() {
       <br></br>
       <div className="content">
         <CheckStatus status={round?.applicationStatus} round={round}/>
-        <Count deadline={round?.considerationDate}/>
       </div>
     </div>
   );

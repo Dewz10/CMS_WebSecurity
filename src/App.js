@@ -13,7 +13,6 @@ import AddCompany from "./views/admin/AddCompany";
 import CheckStatusCompany from "./views/company/CheckStatusCompany";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
-import UpdateForm from "./views/students/UpdateForm";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -193,10 +192,6 @@ function App() {
               <Route
                 path="status"
                 element={<CheckStatus selectedRole={authenticatedUser} />}
-              />
-              <Route
-                path="update/:id"
-                element={<UpdateForm selectedRole={authenticatedUser} />}
               />
             </Route>
           )}

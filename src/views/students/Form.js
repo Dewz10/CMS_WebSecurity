@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import formpdf from "../../assets/แบบฟอร์มสหกิจศึกษา 2566.pdf";
 import { getAllCompany } from "../../services/companyService";
 import axios from "axios";
-import { Modal, Button, Form, Col, file } from "react-bootstrap";
+import { Modal, Button, Form, Col } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
@@ -412,10 +412,12 @@ function MyForm({ selectedRole }) {
                     </Form.Group>
                     <Form.Group
                       className="margin-top-12"
-                      controlId="formFile"
+                      controlId="exampleInputFile"
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
-                      <Form.Control type="file" size="lg" className="form-control"/>
+                      <div className="input-group">
+                        <Form.Control type="file" onChange={handleFileChange} />
+                      </div>
                     </Form.Group>
                     <Form.Group className="margin-top-12">
                       <a
