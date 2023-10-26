@@ -76,6 +76,7 @@ function CheckStatus({ selectedRole }) {
         if (result.isConfirmed) {
           Swal.fire(
             'ลบข้อมูลไม่สำเร็จ',
+            '',
             'error'
             )
           }

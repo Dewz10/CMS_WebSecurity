@@ -415,7 +415,7 @@ function MyForm({ selectedRole }) {
                       controlId="formFile"
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
-                      <Form.Control type="file" size="lg" className="form-control"/>
+                      <input type="file" className="form-control"/>
                     </Form.Group>
                     <Form.Group className="margin-top-12">
                       <a

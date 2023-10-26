@@ -8,10 +8,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
 
-
 const UpdateForm = ({ selectedRole }) => {
   let navigate = useNavigate();
-  const {id} = useParams()
+  const { id } = useParams();
   //let history = useHistory();
   const [company, setCompany] = useState([]);
   useEffect(() => {
@@ -31,37 +30,71 @@ const UpdateForm = ({ selectedRole }) => {
       .then((res) => setProfile(res.data))
       .catch((err) => console.error(err));
   }, []);
-  const [request,setRequest] = useState()
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/internship/request/"+id, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      })
-      .then((res) => setRequest(res.data))
-      .catch((err) => console.error(err));
-  },[])
   //console.log(request?.data?.phone)
   const [stdId, setStdId] = useState(profile?.data?.username.slice(1));
   const [prefix, setPrefix] = useState("");
   const [firstName, setFirstName] = useState(profile?.data?.firstName);
   const [lastName, setLastName] = useState(profile?.data?.lastName);
-  const [phone, setPhone] = useState(request?.data?.phone);
-  const [facebookName, setFacebookName] = useState(request?.facebookName);
-  const [internshipPosition, setInternshipPosition] = useState(request?.internshipPosition);
-  const [requesterName, setRequesterName] = useState(request?.requesterName);
-  const [requesterPosition, setRequesterPosition] = useState(request?.requesterPosition);
-  const [accommodationValue, setAccommodationValue] = useState(request?.accomodation);
-  const [selectedCompany, setSelectedCompany] = useState(request?.company?.id);
-  const [coordinatorName, setCoordinatorName] = useState(request?.coordinatorName);
-  const [coordinatorPhone, setCoordinatorPhone] = useState(request?.coordinatorPhone);
-  const [coordinatorEmail, setCoordinatorEmail] = useState(request?.coordinatorEmail);
-  const [startDate, setStartDate] = useState(request?.startDate);
-  const [endDate, setEndDate] = useState(request?.endDate);
-  const [paymentAmount, setPaymentAmount] = useState(request?.paymentAmount);
-  const [file, setFile] = useState(null);
 
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+ 
+  const [formData, setFormData] = useState({
+    requestDate: "",
+    phone: "",
+    facebookName: "",
+    internshipPosition: "",
+    requesterName: "",
+    requesterPosition: "",
+    coordinatorName: "",
+    coordinatorPhone: "",
+    coordinatorEmail: "",
+    startDate: "",
+    endDate: "",
+    paymentAmount: "",
+    accomodation: "",
+    companyId: 0,
+  });
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/internship/request/" + id, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+      .then((res) => {
+        setFormData({
+          ...formData,
+          requestDate: res.data?.data.requestDate,
+          phone: res.data?.data.phone,
+          facebookName: res.data?.data.facebookName,
+          internshipPosition: res.data?.data.internshipPosition,
+          requesterName: res.data?.data.requesterName,
+          requesterPosition: res.data?.data.requesterPosition,
+          coordinatorName: res.data?.data.coordinatorName,
+          coordinatorPhone: res.data?.data.coordinatorPhone,
+          coordinatorEmail: res.data?.data.coordinatorEmail,
+          startDate: formatDate(res.data?.data.startDate),
+          endDate: formatDate(res.data?.data.endDate),
+          paymentAmount: res.data?.data.paymentAmount,
+          accomodation: res.data?.data.accomodation,
+          companyId: res.data?.data.company?.id,
+        });
+      })
+      .catch((err) => console.error(err));
+  }, []);
+  console.log(formData)
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
@@ -76,64 +109,82 @@ const UpdateForm = ({ selectedRole }) => {
   }, []);
   const [round, setRound] = useState();
   useEffect(() => setRound(rounds[rounds.length - 1]));
-  
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log(phone)
-    const requestData = {
-      requestDate: new Date().toISOString(),
-      phone,
-      facebookName,
-      internshipPosition,
-      requesterName,
-      requesterPosition,
-      coordinatorName,
-      coordinatorPhone,
-      coordinatorEmail,
-      startDate: startDate,
-      endDate: endDate,
-      paymentAmount,
-      accomodation: accommodationValue,
-      attachedFile: "test",
-      applicationRoundId: round.id,
-      companyId: parseInt(selectedCompany),
-    };
 
-    console.log("Form Data (JSON):", JSON.stringify(requestData));
+    
 
-    const headers = {
-      Authorization: "Bearer " + localStorage.getItem("access_token"),
-      "Content-Type": "application/json",
-    };
-
-    axios
-      .post("http://localhost:3000/internship/request", requestData, {
-        headers,
+    Swal.fire({
+      title: 'ยืนยันการแก้ไข',
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#03a96b',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ยืนยัน',
+      cancelButtonText: 'ยกเลิก'
+    }).then((result) => {
+    if(result.isConfirmed){
+      axios.patch('http://localhost:3000/internship/request/'+id,formData,{
+        headers: {
+          Authorization: 'Bearer '+localStorage.getItem("access_token")
+        }
       })
-      .then((res) => {
-        console.log("Form submitted successfully", res.data);
-        setIsSubmitting(false);
-        Swal.fire("ส่งคำร้องสำเร็จ", "", "success");
-        setTimeout(function () {
-          window.location.href = "/status";
+      .then(res => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'แก้ไขข้อมูลสำเร็จ',
+            'ข้อมูลของคุณถูกแก้ไขเรียบร้อย',
+            'success'
+          )
+        }
+        setTimeout(function() {
+          window.location.href='/status'
         }, 1500);
       })
-      .catch((err) => {
-        console.error("Form submission error", err);
-        setIsSubmitting(false);
-        Swal.fire("ไม่สำเร็จ", "โปรดตรวจสอบข้อมูล", "error");
-      });
+      .catch(err => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'แก้ไขข้อมูลไม่สำเร็จ',
+            'โปรดตรวจสอบข้อมูลอีกครั้ง',
+            'error'
+            )
+          }
+      })
+    }
+      
+    })
 
     setIsSubmitting(true);
   };
-
-  const handleAccommodationChange = (e) => {
-    setAccommodationValue(e.target.value);
+  const handleChange = (e) => {
+    if (e.target.name === "companyId") {
+      // Update formData if the condition is true
+      setFormData({
+          ...formData,
+          [e.target.name]: parseInt(e.target.value),
+      });
+  }else if(e.target.name === "startDate" || e.target.name === "endDate"){
+    let date = new Date(e.target.value)
+    setFormData({
+      ...formData,
+      [e.target.name]: date,
+  });
+  }
+   else {
+      // Update formData differently if the condition is false
+      setFormData({
+          ...formData,
+          [e.target.name]: e.target.value
+          // Update other properties as needed
+      });
+  }
   };
 
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
+    
   };
 
   if (selectedRole !== "user") {
@@ -225,9 +276,10 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Label>เบอร์โทรศัพท์</Form.Label>
                       <Form.Control
                         type="text"
+                        name="phone"
                         placeholder="เบอร์โทรศัพท์"
-                        value={request?.data?.phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        defaultValue={formData.phone}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -238,8 +290,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="Facebook"
-                        value={request?.facebookName}
-                        onChange={(e) => setFacebookName(e.target.value)}
+                        name="facebookName"
+                        defaultValue={formData.facebookName}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -250,7 +303,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="ตำแหน่งที่ไปฝึกงาน/สหกิจศึกษา"
-                        onChange={(e) => setInternshipPosition(e.target.value)}
+                        defaultValue={formData.internshipPosition}
+                        name="internshipPosition"
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -264,7 +319,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="ระบุชื่อของผู้ที่จะให้ภาควิชาฯออกหนังสือ ขอความอนุเคราะห์ฝึกงาน/สหกิจ"
-                        onChange={(e) => setRequesterName(e.target.value)}
+                        defaultValue={formData.requesterName}
+                        name="requesterName"
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -278,12 +335,15 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="ระบุตำแหน่งของผู้ที่จะให้ภาควิชาฯ ออกหนังสือขอความอนุเคราะห์ฝึกงาน/สหกิจ"
-                        onChange={(e) => setRequesterPosition(e.target.value)}
+                        defaultValue={formData.requesterPosition}
+                        name="requesterPosition"
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
                       className="margin-top-12"
                       controlId="accommodation"
+                      defaultChecked={formData.accomodation}
                     >
                       <Form.Label>ที่พัก</Form.Label>
                       <div className="form-check form-check-inline">
@@ -291,32 +351,32 @@ const UpdateForm = ({ selectedRole }) => {
                           type="radio"
                           id="customRadioAccommodation1"
                           label="มี"
-                          name="customRadioAccommodation"
-                          value="มี"
-                          checked={accommodationValue === "มี"}
-                          onChange={handleAccommodationChange}
+                          name="accomodation"
+                          value="yes"
+                          checked={formData.accomodation === "yes"}
+                          onChange={handleChange}
                         />
                         <Form.Check
                           type="radio"
                           id="customRadioAccommodation2"
                           label="ไม่มี"
-                          name="customRadioAccommodation"
-                          value="ไม่มี"
-                          checked={accommodationValue === "ไม่มี"}
-                          onChange={handleAccommodationChange}
+                          name="accomodation"
+                          value="no"
+                          checked={formData.accomodation === "no"}
+                          onChange={handleChange}
                         />
                         <Form.Check
                           type="radio"
                           id="customRadioAccommodation3"
                           label="อื่นๆ"
-                          name="customRadioAccommodation"
+                          name="accomodation"
                           value="อื่นๆ"
-                          checked={accommodationValue === "อื่นๆ"}
-                          onChange={handleAccommodationChange}
+                          checked={formData.accomodation === "อื่นๆ"}
+                          onChange={handleChange}
                         />
                       </div>
                     </Form.Group>
-                    {accommodationValue === "อื่นๆ" && (
+                    {formData.accomodation === "อื่นๆ" && (
                       <Form.Group
                         className="margin-top-12"
                         controlId="other_accommodation"
@@ -325,9 +385,7 @@ const UpdateForm = ({ selectedRole }) => {
                         <Form.Control
                           type="text"
                           placeholder="กรณีอื่นๆ"
-                          onChange={(e) =>
-                            setAccommodationValue(e.target.value)
-                          }
+                          
                         />
                       </Form.Group>
                     )}
@@ -338,10 +396,12 @@ const UpdateForm = ({ selectedRole }) => {
                       controlId="select2-input-company"
                     >
                       <Form.Label>สถานประกอบการ</Form.Label>
-                      <Form.Control 
+                      <Form.Control
                         as="select"
                         style={{ width: "100%" }}
-                        onChange={(e) => setSelectedCompany(e.target.value)}
+                        name="companyId"
+                        value={formData.companyId}
+                        onChange={handleChange}
                       >
                         {company.map((data) => (
                           <option key={data.id} value={data.id}>
@@ -358,7 +418,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="ชื่อผู้ประสานงาน"
-                        onChange={(e) => setCoordinatorName(e.target.value)}
+                        name="coordinatorName"
+                        defaultValue={formData.coordinatorName}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -369,7 +431,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="โทร"
-                        onChange={(e) => setCoordinatorPhone(e.target.value)}
+                        name="coordinatorPhone"
+                        defaultValue={formData.coordinatorPhone}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -380,7 +444,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="email"
                         placeholder="E-mail"
-                        onChange={(e) => setCoordinatorEmail(e.target.value)}
+                        name="coordinatorEmail"
+                        defaultValue={formData.coordinatorEmail}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <div className="row">
@@ -392,8 +458,9 @@ const UpdateForm = ({ selectedRole }) => {
                           <Form.Label>ระยะเวลาตั้งแต่</Form.Label>
                           <Form.Control
                             type="date"
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
+                            defaultValue={formData.startDate}
+                            name="startDate"
+                            onChange={handleChange}
                           />
                         </Form.Group>
                       </div>
@@ -405,8 +472,9 @@ const UpdateForm = ({ selectedRole }) => {
                           <Form.Label>ถึงวันที่</Form.Label>
                           <Form.Control
                             type="date"
-                            selected={endDate}
-                            onChange={(date) => setEndDate(date)}
+                            defaultValue={formData.endDate}
+                            name="endDate"
+                            onChange={handleChange}
                           />
                         </Form.Group>
                       </div>
@@ -422,7 +490,9 @@ const UpdateForm = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ ไม่มีค่าตอบแทน)"
-                        onChange={(e) => setPaymentAmount(e.target.value)}
+                        name="paymentAmount"
+                        defaultValue={formData.paymentAmount}
+                        onChange={handleChange}
                       />
                     </Form.Group>
                     <Form.Group
@@ -462,9 +532,9 @@ const UpdateForm = ({ selectedRole }) => {
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
-                    disabled={isSubmitting} // Disable the button while submitting
+                   // Disable the button while submitting
                   >
-                    {isSubmitting ? "กำลังแก้ไข..." : "แก้ไข"}
+                    แก้ไข
                   </button>
                   <button
                     type="button"
@@ -473,7 +543,7 @@ const UpdateForm = ({ selectedRole }) => {
                       width: "10%",
                       border: "none",
                     }}
-                    onClick={()=>navigate(-1)}
+                    onClick={() => navigate(-1)}
                   >
                     ย้อนกลับ
                   </button>
