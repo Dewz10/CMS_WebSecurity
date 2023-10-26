@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
+import '../../index.css'
 
 const UpdateForm = ({ selectedRole }) => {
   let navigate = useNavigate();
@@ -501,7 +502,7 @@ const UpdateForm = ({ selectedRole }) => {
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
                       <div className="input-group">
-                        <Form.Control type="file" onChange={handleFileChange} />
+                      <input type="file" className="form-control h-100"/>
                       </div>
                     </Form.Group>
                     <Form.Group className="margin-top-12">
