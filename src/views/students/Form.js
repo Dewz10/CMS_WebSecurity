@@ -36,7 +36,7 @@ function MyForm({ selectedRole }) {
   const [requesterName, setRequesterName] = useState("");
   const [requesterPosition, setRequesterPosition] = useState("");
   const [accommodationValue, setAccommodationValue] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState(1);
   const [coordinatorName, setCoordinatorName] = useState("");
   const [coordinatorPhone, setCoordinatorPhone] = useState("");
   const [coordinatorEmail, setCoordinatorEmail] = useState("");
@@ -49,34 +49,35 @@ function MyForm({ selectedRole }) {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("requestDate", new Date().toISOString());
-    formData.append("phone", phone);
-    formData.append("facebookName", facebookName);
-    formData.append("internshipPosition", internshipPosition);
-    formData.append("requesterName", requesterName);
-    formData.append("requesterPosition", requesterPosition);
-    formData.append("coordinatorName", coordinatorName);
-    formData.append("coordinatorPhone", coordinatorPhone);
-    formData.append("coordinatorEmail", coordinatorEmail);
-    formData.append("startDate", startDate.toISOString());
-    formData.append("endDate", endDate.toISOString());
-    formData.append("paymentAmount", paymentAmount);
-    formData.append("accommodation", accommodationValue);
-    formData.append("attachedFile", file);
-    formData.append("applicationRoundId", 1);
-    formData.append("companyId", selectedCompany);
-
-    console.log(firstName)
-
+  
+    const requestData = {
+      requestDate: new Date().toISOString(),
+      phone,
+      facebookName,
+      internshipPosition,
+      requesterName,
+      requesterPosition,
+      coordinatorName,
+      coordinatorPhone,
+      coordinatorEmail,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      paymentAmount,
+      accomodation: accommodationValue,
+      attachedFile: "test",
+      applicationRoundId: 1,
+      companyId: parseInt(selectedCompany)
+    };
+  
+    console.log("Form Data (JSON):", JSON.stringify(requestData));
+  
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-      "Content-Type": "multipart/form-data",
+      "Content-Type": "application/json",
     };
-
+  
     axios
-      .post("http://localhost:3000/internship/request", formData, { headers })
+      .post("http://localhost:3000/internship/request", requestData, { headers })
       .then((res) => {
         console.log("Form submitted successfully", res.data);
         setIsSubmitting(false);
@@ -85,9 +86,9 @@ function MyForm({ selectedRole }) {
         console.error("Form submission error", err);
         setIsSubmitting(false);
       });
-
+  
     setIsSubmitting(true);
-  };
+  };  
 
   const handleAccommodationChange = (e) => {
     setAccommodationValue(e.target.value);
