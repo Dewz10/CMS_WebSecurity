@@ -5,7 +5,6 @@ import "../../src/styles.css";
 function Menu({ selectedRole, userData }) {
   const navigate = useNavigate(); // ดึงใช้งาน useNavigate
 
-  console.log(userData);
   const handleReloadAndNavigate = (url) => {
     navigate(url);
   };
@@ -14,8 +13,7 @@ function Menu({ selectedRole, userData }) {
 
   if (userData) {
     let username = userData?.data?.username;
-    console.log(userData)
-    userName = username.slice(1);
+    userName = username;
   }
 
   return (
