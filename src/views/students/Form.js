@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import formpdf from "../../assets/แบบฟอร์มสหกิจศึกษา 2566.pdf";
 import { getAllCompany } from "../../services/companyService";
 import axios from "axios";
-import Form from "react-bootstrap/Form";
+import { Modal, Button, Form, Col } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function MyForm({ selectedRole }) {
+  let navigate = useNavigate()
   const [company, setCompany] = useState([]);
   useEffect(() => {
     getAllCompany()
@@ -36,7 +39,7 @@ function MyForm({ selectedRole }) {
   const [requesterName, setRequesterName] = useState("");
   const [requesterPosition, setRequesterPosition] = useState("");
   const [accommodationValue, setAccommodationValue] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState(1);
+  const [selectedCompany, setSelectedCompany] = useState();
   const [coordinatorName, setCoordinatorName] = useState("");
   const [coordinatorPhone, setCoordinatorPhone] = useState("");
   const [coordinatorEmail, setCoordinatorEmail] = useState("");
@@ -46,7 +49,18 @@ function MyForm({ selectedRole }) {
   const [file, setFile] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [rounds,setRounds] = useState([])
+  useEffect(()=>{
+    axios.get('http://localhost:3000/internship/application',{
+      headers: {
+        Authorization: 'Bearer '+localStorage.getItem('access_token')
+      }
+    })
+    .then(res => setRounds(res.data.data))
+    .catch(err => console.error(err))
+  },[])
+  const [round,setRound] = useState()
+  useEffect(()=>setRound(rounds[rounds.length-1]))
   const handleFormSubmit = (e) => {
     e.preventDefault();
   
@@ -60,12 +74,12 @@ function MyForm({ selectedRole }) {
       coordinatorName,
       coordinatorPhone,
       coordinatorEmail,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      startDate: startDate,
+      endDate: endDate,
       paymentAmount,
       accomodation: accommodationValue,
       attachedFile: "test",
-      applicationRoundId: 1,
+      applicationRoundId: round.id,
       companyId: parseInt(selectedCompany)
     };
   
@@ -81,10 +95,23 @@ function MyForm({ selectedRole }) {
       .then((res) => {
         console.log("Form submitted successfully", res.data);
         setIsSubmitting(false);
+        Swal.fire(
+          'ส่งคำร้องสำเร็จ',
+          '',
+          'success'
+        )
+        setTimeout(function() {
+          window.location.href='/status'
+        }, 1500);
       })
       .catch((err) => {
         console.error("Form submission error", err);
         setIsSubmitting(false);
+        Swal.fire(
+          'ไม่สำเร็จ',
+          'โปรดตรวจสอบข้อมูล',
+          'error'
+        )
       });
   
     setIsSubmitting(true);
@@ -294,16 +321,19 @@ function MyForm({ selectedRole }) {
                       controlId="select2-input-company"
                     >
                       <Form.Label>สถานประกอบการ</Form.Label>
-                      <Form.Select
+                      <Form.Control
+                        as="select"
                         style={{ width: "100%" }}
+                        class="form-select"
                         onChange={(e) => setSelectedCompany(e.target.value)}
                       >
+                        <option value="hide">-- สถานประกอบการ --</option>
                         {company.map((data) => (
                           <option key={data.id} value={data.id}>
                             {data.name}
                           </option>
                         ))}
-                      </Form.Select>
+                      </Form.Control>
                     </Form.Group>
                     <Form.Group
                       className="margin-top-12"
@@ -345,9 +375,10 @@ function MyForm({ selectedRole }) {
                           controlId="start_date"
                         >
                           <Form.Label>ระยะเวลาตั้งแต่</Form.Label>
-                          <DatePicker
+                          <Form.Control
+                            type="date"
                             selected={startDate}
-                            onChange={(date) => setStartDate(date)}
+                            onChange={(e) => setStartDate(e.target.value)}
                           />
                         </Form.Group>
                       </div>
@@ -357,9 +388,10 @@ function MyForm({ selectedRole }) {
                           controlId="start_date"
                         >
                           <Form.Label>ถึงวันที่</Form.Label>
-                          <DatePicker
+                          <Form.Control
+                            type="date"
                             selected={endDate}
-                            onChange={(date) => setEndDate(date)}
+                            onChange={(e) => setEndDate(e.target.value)}
                           />
                         </Form.Group>
                       </div>

@@ -22,9 +22,11 @@
     "react-datetime-picker": "^5.5.2",
     "react-dom": "^18.2.0",
     "react-loader-spinner": "^5.4.5",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "select2": "^4.1.0-rc.0",
+    "sweetalert2": "^11.7.32",
     "tempusdominus-bootstrap-4": "^5.39.2",
     "web-vitals": "^2.1.4"
   },
