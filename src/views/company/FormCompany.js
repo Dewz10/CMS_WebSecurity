@@ -1,6 +1,156 @@
-import React from 'react'
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Form } from "react-bootstrap";
+import Swal from "sweetalert2";
+
+let user = new Set();
+let currentUser = new Set();
+let User = [];
 
 function FormCompany() {
+  const [collegians, setCollegians] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/users/collegians", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+      .then((res) => setCollegians(res.data.data))
+      .catch((err) => console.error(err));
+  }, []);
+  //console.log(collegians);
+  const [profile, setProfile] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/auth/profile", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+      .then((res) => setProfile(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+  const [companyRequest, setCompanyRequest] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/internship/company-request/company", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+      .then((res) => console.log(res.data.data))
+      .catch((err) => console.error(err));
+  }, []);
+  const [applicationId, setApplicationId] = useState();
+  const [rounds, setRounds] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/internship/application", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+      .then((res) => setRounds(res.data.data))
+      .catch((err) => console.error(err));
+  }, []);
+  const [round, setRound] = useState();
+  useEffect(() => setRound(rounds[rounds.length - 1]));
+  const [addUser, setAddUser] = useState([]);
+  const [formData, setFormData] = useState({
+    requesterName: "",
+    requesterPosition: "",
+    coordinatorName: "",
+    coordinatorPhone: "",
+    coordinatorEmail: "",
+    startDate: "",
+    endDate: "",
+    paymentAmount: "",
+    accomodation: "",
+    applicationRoundId: "",
+    userIds: [],
+  });
+
+  const handleSubmit = () => {
+    console.log(formData);
+    axios
+      .post("http://localhost:3000/internship/company-request", formData, { 
+        headers: {
+          Authorization: 'Bearer '+ localStorage.getItem('access_token')
+        }
+       })
+      .then((res) => {
+        console.log("Form submitted successfully", res.data);
+        Swal.fire(
+          'ส่งคำร้องสำเร็จ',
+          '',
+          'success'
+        )
+        setTimeout(function() {
+          
+        }, 1500);
+      })
+      .catch((err) => {
+        console.error("Form submission error", err);
+        Swal.fire(
+          'ไม่สำเร็จ',
+          'โปรดตรวจสอบข้อมูล',
+          'error'
+        )
+      });
+  };
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      applicationRoundId: round.id,
+      [e.target.name]: e.target.value,
+    });
+  }
+  async function addNisit() {
+    let option = {};
+    for (let i = 0; i < collegians.length; i++) {
+      option[collegians[i].id] =
+        collegians[i].firstName + " " + collegians[i].lastName;
+    }
+    const { value: id } = await Swal.fire({
+      title: "รายชื่อนิสิต",
+      input: "select",
+      inputOptions: option,
+      inputPlaceholder: "เลือกรายชื่อนิสิต",
+      showCancelButton: true,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          resolve();
+        });
+      },
+    });
+
+    if (id) {
+      user.add(parseInt(id));
+      const found = collegians.find((element) => element.id === parseInt(id));
+      currentUser.add(found);
+      User = Array.from(currentUser);
+      //console.log(User);
+      setAddUser(currentUser);
+      setFormData({
+        ...formData,
+        userIds: Array.from(user)
+      })
+      // var table = document.getElementById("myTable");
+      // var row = table.insertRow(0);
+      // var cell1 = row.insertCell(0);
+      // var cell2 = row.insertCell(1);
+      // var cell3 = row.insertCell(2);
+      // var cell4 = row.insertCell(3);
+      // cell1.innerHTML = found.prefix;
+      // cell2.innerHTML = found.firstName;
+      // cell3.innerHTML = found.lastName;
+
+      Swal.fire(`เพิ่มสำเร็จ`, "", "success");
+    }
+  }
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -48,205 +198,176 @@ function FormCompany() {
             </div>
             {/* /.card-header */}
             <div className="card-body">
-              <form>
+              <Form>
                 <div className="row">
                   <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="exampleInputEmail1">
+                    <Form.Group className="form-group">
+                      <Form.Label>
                         ระบุชื่อของผู้ที่จะให้ภาควิชาฯออกหนังสือ
                         ขอความอนุเคราะห์ฝึกงาน/สหกิจ
-                      </label>
-                      <input
+                      </Form.Label>
+                      <Form.Control
                         type="text"
-                        className="form-control"
                         id="requester_name"
                         placeholder="ระบุชื่อของผู้ที่จะให้ภาควิชาฯออกหนังสือ ขอความอนุเคราะห์ฝึกงาน/สหกิจ"
+                        name="requesterName"
+                        onChange={handleChange}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="requester_position">
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>
                         ระบุตำแหน่งของผู้ที่จะให้ภาควิชาฯ
                         ออกหนังสือขอความอนุเคราะห์ฝึกงาน/สหกิจ
-                      </label>
-                      <input
+                      </Form.Label>
+                      <Form.Control
                         type="text"
-                        className="form-control"
                         id="requester_position"
                         placeholder="ระบุตำแหน่งของผู้ที่จะให้ภาควิชาฯ 
                         ออกหนังสือขอความอนุเคราะห์ฝึกงาน/สหกิจ"
+                        name="requesterPosition"
+                        onChange={handleChange}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label>สถานประกอบการ</label>
-                      <input
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>สถานประกอบการ</Form.Label>
+                      <Form.Control
                         type="text"
-                        className="form-control"
                         id="company_name"
                         placeholder="ชื่อผู้ประสานงาน"
-                        value={"บริษัท xxxxx จำกัด"}
+                        value={profile?.data?.firstName}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="coordinator_name">ชื่อผู้ประสานงาน</label>
-                      <input
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>ชื่อผู้ประสานงาน</Form.Label>
+                      <Form.Control
                         type="text"
-                        className="form-control"
                         id="coordinator_name"
                         placeholder="ชื่อผู้ประสานงาน"
+                        name="coordinatorName"
+                        onChange={handleChange}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="coordinator_phone">โทร</label>
-                      <input
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>โทร</Form.Label>
+                      <Form.Control
                         type="text"
-                        className="form-control"
                         id="coordinator_phone"
                         placeholder="โทร"
+                        name="coordinatorPhone"
+                        onChange={handleChange}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="coordinator_email">E-mail</label>
-                      <input
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>E-mail</Form.Label>
+                      <Form.Control
                         type="email"
-                        className="form-control"
                         id="coordinator_email"
                         placeholder="E-mail"
+                        name="coordinatorEmail"
+                        onChange={handleChange}
                       />
-                    </div>
-                    
+                    </Form.Group>
                   </div>
                   {/* /.col */}
                   <div className="col-md-6">
-      
                     <div className="row">
                       <div className="col-6">
-                        <div class="form-group">
-                          <label>ระยะเวลาตั้งแต่</label>
-                          <div
-                            class="input-group date"
-                            id="reservationdate2"
-                            data-target-input="nearest"
-                          >
-                            <input
-                              type="text"
-                              id="start_date"
-                              class="form-control datetimepicker-input"
-                              data-target="#reservationdate2"
-                            />
-                            <div
-                              class="input-group-append"
-                              data-target="#reservationdate2"
-                              data-toggle="datetimepicker"
-                            >
-                              <div class="input-group-text">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <Form.Group>
+                          <Form.Label>ระยะเวลาตั้งแต่</Form.Label>
+                          <Form.Control
+                            type="date"
+                            name="startDate"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
                       </div>
                       <div className="col-6">
-                        <div class="form-group">
-                          <label>ถึง</label>
-                          <div
-                            class="input-group date"
-                            id="reservationdate3"
-                            data-target-input="nearest"
-                          >
-                            <input
-                              type="text"
-                              id="end_date"
-                              class="form-control datetimepicker-input"
-                              data-target="#reservationdate3"
-                            />
-                            <div
-                              class="input-group-append"
-                              data-target="#reservationdate3"
-                              data-toggle="datetimepicker"
-                            >
-                              <div class="input-group-text">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <Form.Group>
+                          <Form.Label>ถึงวันที่</Form.Label>
+                          <Form.Control
+                            type="date"
+                            name="endDate"
+                            onChange={handleChange}
+                          />
+                        </Form.Group>
                       </div>
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="payment_amount">
+                    <Form.Group>
+                      <Form.Label>
                         จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ
                         ไม่มีค่าตอบแทน)
-                      </label>
-                      <input
+                      </Form.Label>
+                      <Form.Control
                         type="text"
-                        className="form-control"
                         id="payment_amount"
                         placeholder="จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ ไม่มีค่าตอบแทน)"
+                        name="paymentAmount"
+                        onChange={handleChange}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="payment_amount">ที่พัก</label>
-                      <div style={{ paddingRight: 35 }}></div>
-                      <div className="accomodation" style={{ display: "flex" }}>
-                        <div className="custom-control custom-radio">
-                          <input
-                            className="custom-control-input"
-                            type="radio"
-                            id="customRadioAccomodation1"
-                            name="customRadio"
-                          />
-                          <label
-                            htmlFor="customRadioAccomodation1"
-                            className="custom-control-label"
-                          >
-                            มี
-                          </label>
-                        </div>
-                        <div style={{ paddingRight: 35 }}></div>
-                        <div className="custom-control custom-radio">
-                          <input
-                            className="custom-control-input"
-                            type="radio"
-                            id="customRadioAccomodation2"
-                            name="customRadio"
-                          />
-                          <label
-                            htmlFor="customRadioAccomodation2"
-                            className="custom-control-label"
-                          >
-                            ไม่มี
-                          </label>
-                        </div>
-                        <div style={{ paddingRight: 35 }}></div>
-                        <div className="custom-control custom-radio">
-                          <input
-                            className="custom-control-input"
-                            type="radio"
-                            id="customRadioAccomodation3"
-                            name="customRadio"
-                          />
-                          <label
-                            htmlFor="customRadioAccomodation3"
-                            className="custom-control-label"
-                          >
-                            อื่นๆ
-                          </label>
-                        </div>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="accomodation"></label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="accomodation"
-                          placeholder="กรณีอื่นๆ"
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>ที่พัก</Form.Label>
+                      <div className="form-check form-check-inline">
+                        <Form.Check
+                          type="radio"
+                          id="customRadioAccommodation1"
+                          label="มี"
+                          name="accomodation"
+                          value="yes"
+                          onChange={handleChange}
+                        />
+                        <Form.Check
+                          type="radio"
+                          id="customRadioAccommodation2"
+                          label="ไม่มี"
+                          name="accomodation"
+                          value="no"
+                          onChange={handleChange}
+                        />
+                        <Form.Check
+                          type="radio"
+                          id="customRadioAccommodation3"
+                          label="อื่นๆ"
+                          name="accomodation"
+                          value="อื่นๆ"
+                          onChange={handleChange}
                         />
                       </div>
-                    </div>
+                    </Form.Group>
                     <div className="form-group">
                       <a href="https://www.facebook.com/cpe.eng.kps/?locale=th_TH">
                         ติดต่อสอบถามเพิ่มเติม
                       </a>
+                    </div>
+                    <button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={addNisit}
+                    >
+                      เพิ่มรายชื่อนิสิตฝึกงาน
+                    </button>
+                    <div className="card-body">
+                      <table
+                        id="myTable"
+                        className="table table-bordered table-striped"
+                      >
+                        <thead>
+                          <tr>
+                            <th>คำนำหน้า</th>
+                            <th>ชื่อจริง</th>
+                            <th>นามสุกล</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                   {/* /.col */}
@@ -261,18 +382,19 @@ function FormCompany() {
                   }}
                 >
                   <button
-                    type="submit"
+                    type="button"
                     className="btn btn-primary"
                     style={{
                       width: "20%",
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
+                    onClick={handleSubmit}
                   >
                     ส่งคำร้อง
                   </button>
                 </div>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
@@ -280,7 +402,7 @@ function FormCompany() {
       </section>
       {/* /.content */}
     </div>
-  )
+  );
 }
 
-export default FormCompany
+export default FormCompany;
