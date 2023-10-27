@@ -10,6 +10,7 @@ function OpenRound() {
   const [editMode, setEditMode] = useState(false);
   const [data, setData] = useState([]);
   const [rounds, setRounds] = useState([]);
+  const [idEdit, setIdEdit] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     openingDate: "",
@@ -100,49 +101,27 @@ function OpenRound() {
     setShowModal(false);
 
     if (editMode) {
-      const parsedOpeningDate = new Date(formData.openingDate);
-      const parsedClosingDate = new Date(formData.closingDate);
-      const parsedConsideringDate = new Date(formData.considerationDate);
-
-      if (!isNaN(parsedOpeningDate) && !isNaN(parsedClosingDate)) {
-        const formattedOpeningDate = format(parsedOpeningDate, "yyyy-MM-dd");
-        const formattedClosingDate = format(parsedClosingDate, "yyyy-MM-dd");
-        const formattedConsideringDate = format(
-          parsedConsideringDate,
-          "yyyy-MM-dd"
-        );
-
-        formData.openingDate = formattedOpeningDate;
-        formData.closingDate = formattedClosingDate;
-        formData.considerationDate = formattedConsideringDate;
-
-        axios
-          .patch(
-            `http://localhost:3000/internship/application/${formData.id}`,
-            formData,
-            {
-              headers: {
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
-              },
-            }
-          )
-          .then((response) => {
-            Swal.fire(
-              "บันทึกสำเร็จ!",
-              "ข้อมูลถูกบันทึกเรียบร้อยแล้ว",
-              "success"
-            );
-            setTimeout(function () {
-              window.location.reload();
-            }, 1500);
-          })
-          .catch((error) => {
-            Swal.fire("ข้อผิดพลาด!", "ไม่สามารถบันทึกข้อมูลได้", "error");
-            console.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล:", error);
-          });
-      } else {
-        Swal.fire("ข้อผิดพลาด!", "รูปแบบวันที่ไม่ถูกต้อง", "error");
-      }
+      console.log(idEdit)
+      axios
+        .patch(
+          `http://localhost:3000/internship/application/`+idEdit,
+          formData,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        )
+        .then((response) => {
+          Swal.fire("บันทึกสำเร็จ!", "ข้อมูลถูกบันทึกเรียบร้อยแล้ว", "success");
+          setTimeout(function () {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch((error) => {
+          Swal.fire("ข้อผิดพลาด!", "ไม่สามารถบันทึกข้อมูลได้", "error");
+          console.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล:", error);
+        });
     } else {
       axios
         .post("http://localhost:3000/internship/application", formData, {
@@ -163,18 +142,43 @@ function OpenRound() {
     }
   };
 
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+
   const handleEdit = (row) => {
     setEditMode(true);
-    console.log(formData);
+    setIdEdit(row.id);
     setFormData({
       name: row.name,
-      openingDate: row.openingDate,
-      closingDate: row.closingDate,
+      openingDate: formatDate(row.openingDate),
+      closingDate: formatDate(row.closingDate),
       internshipType: row.internshipType,
-      considerationDate: row.considerationDate,
+      considerationDate: formatDate(row.considerationDate),
       applicationStatus: row.applicationStatus,
     });
     setShowModal(true);
+  };
+
+  const handleAdd = () => {
+    setEditMode(false);
+    setShowModal(true);
+    setFormData({
+      name: "",
+      openingDate: "",
+      closingDate: "",
+      internshipType: "internship",
+      considerationDate: "",
+      applicationStatus: "Open",
+    });
   };
 
   const handleDelete = (row) => {
@@ -245,7 +249,7 @@ function OpenRound() {
               className="card-header"
               style={{ display: "flex", justifyContent: "end" }}
             >
-              <Button variant="primary" onClick={() => setShowModal(true)}>
+              <Button variant="primary" onClick={() => handleAdd()}>
                 เพิ่มรอบ
               </Button>
             </div>
