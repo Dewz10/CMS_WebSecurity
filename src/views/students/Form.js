@@ -7,6 +7,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+<<<<<<< Updated upstream
+=======
+import '../../index.css'
+import { getAllRequest } from "../../services/internshipService";
+import NotFound from "../pageHandle/NotFound";
+>>>>>>> Stashed changes
 
 function MyForm({ selectedRole }) {
   let navigate = useNavigate()
@@ -127,7 +133,11 @@ function MyForm({ selectedRole }) {
   };
 
   if (selectedRole !== "user") {
-    return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
+    return (
+      <>
+        <NotFound />
+      </>
+    );
   }
 
   return (
