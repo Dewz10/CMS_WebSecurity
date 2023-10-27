@@ -28,6 +28,28 @@ function CheckStatusCompany() {
 
     return [year, month, day].join("-");
   }
+  function showNisit(){
+
+  }
+  function handleDelete(){
+    Swal.fire({
+      title: 'ยืนยันที่จะลบ?',
+      text: "หากทำแล้วจะไม่สามารถย้อนกลับมาได้อีก",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ยืนยัน'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'ข้อมูลถูกลบเรียบร้อย',
+          'คำร้องของคุณถูกลบเรียบร้อย',
+          'success'
+        )
+      }
+    })
+  }
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -65,7 +87,7 @@ function CheckStatusCompany() {
                 <thead>
                   <tr>
                     <th>รอบที่</th>
-                    
+                    <th>รายชื่อนิสิต</th>
                     <th>สถานะ</th>
                   </tr>
                 </thead>
@@ -88,6 +110,7 @@ function CheckStatusCompany() {
                     return (
                       <tr key={i}>
                         <td>{data?.applicationRound.name}</td>
+                        <td><button className="btn btn-primary">รายชื่อนิสิต</button></td>
                         <td>
                           <span className={cn}>{message}</span>
                         </td>
@@ -95,7 +118,7 @@ function CheckStatusCompany() {
                           <Link className="text-decoration-none btn btn-sm btn-warning">
                             แก้ไข
                           </Link>
-                          <button className="text-decoration-none btn btn-sm btn-danger ml-1">
+                          <button className="text-decoration-none btn btn-sm btn-danger ml-1" onClick={handleDelete}>
                             ลบ
                           </button>
                         </td>
