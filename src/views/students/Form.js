@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import '../../index.css'
+import { getAllRequest } from "../../services/internshipService";
 
 function MyForm({ selectedRole }) {
   let navigate = useNavigate()
@@ -62,6 +63,16 @@ function MyForm({ selectedRole }) {
   },[])
   const [round,setRound] = useState()
   useEffect(()=>setRound(rounds[rounds.length-1]))
+  const [request,setRequest] = useState([])
+  useEffect(()=>{
+    getAllRequest()
+    .then(res => setRequest(res.data))
+    .catch(err => console.error(err))
+  },[])
+  const [canPress,setCanPress] = useState(false)
+  request?.map((data,i)=>{
+    console.log(data)
+  })
   const handleFormSubmit = (e) => {
     e.preventDefault();
   

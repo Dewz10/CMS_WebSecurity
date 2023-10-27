@@ -31,15 +31,19 @@ function CheckStatus({ selectedRole }) {
   if (selectedRole !== "user") {
     return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
   }
-  // function openModal(){
-  //   setIsOpen(true)
-  // }
-  // function closeModal(){
-  //   setIsOpen(false)
-  // }
-  // function afterOpenModal(){
-  //   subtitle.style.color = '#f00'
-  // }
+  function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
   function handleClick(id){
 
     console.log(id)
@@ -146,7 +150,7 @@ function CheckStatus({ selectedRole }) {
                         return (
                           <tr key={i}>
                             <td>{data.applicationRound.name}</td>
-                            <td>10-10-2023</td>
+                            <td>{formatDate(data.requestDate)}</td>
                             <td>{data.company.name}</td>
                             <td>
                             <span className={cn}>{message}</span>
