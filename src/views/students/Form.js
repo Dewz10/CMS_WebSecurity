@@ -7,17 +7,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-<<<<<<< Updated upstream
-import '../../index.css'
-import { getAllRequest } from "../../services/internshipService";
-=======
-<<<<<<< Updated upstream
-=======
+
 import '../../index.css'
 import { getAllRequest } from "../../services/internshipService";
 import NotFound from "../pageHandle/NotFound";
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 function MyForm({ selectedRole }) {
   let navigate = useNavigate()
