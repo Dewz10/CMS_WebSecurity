@@ -72,9 +72,6 @@ function MyForm({ selectedRole }) {
     .catch(err => console.error(err))
   },[])
   const [canPress,setCanPress] = useState(false)
-  request?.map((data,i)=>{
-    console.log(data)
-  })
   const handleFormSubmit = (e) => {
     e.preventDefault();
   
@@ -92,7 +89,7 @@ function MyForm({ selectedRole }) {
       endDate: endDate,
       paymentAmount,
       accomodation: accommodationValue,
-      attachedFile: "test",
+      file: file,
       applicationRoundId: round.id,
       companyId: parseInt(selectedCompany)
     };
@@ -101,7 +98,7 @@ function MyForm({ selectedRole }) {
   
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
     };
   
     axios
@@ -433,7 +430,7 @@ function MyForm({ selectedRole }) {
                       controlId="formFile"
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
-                      <input type="file" className="form-control h-100"/>
+                      <input type="file" className="form-control h-100" onChange={handleFileChange}/>
                     </Form.Group>
                     <Form.Group className="margin-top-12">
                       <a

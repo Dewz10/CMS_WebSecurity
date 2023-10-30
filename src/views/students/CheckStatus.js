@@ -24,7 +24,7 @@ function CheckStatus({ selectedRole }) {
   const [request,setRequest] = useState([])
   useEffect(()=>{
     getAllRequest()
-    .then(res => setRequest(res.data))
+    .then(res => console.log(res))
     .catch(err => console.error(err))
   },[])
   const [modalIsOpen,setIsOpen] = useState(false)
