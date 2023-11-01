@@ -75,29 +75,19 @@ function FormCompany() {
   const handleSubmit = () => {
     console.log(formData);
     axios
-      .post("http://localhost:3000/internship/company-request", formData, { 
+      .post("http://localhost:3000/internship/company-request", formData, {
         headers: {
-          Authorization: 'Bearer '+ localStorage.getItem('access_token')
-        }
-       })
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
       .then((res) => {
         console.log("Form submitted successfully", res.data);
-        Swal.fire(
-          'ส่งคำร้องสำเร็จ',
-          '',
-          'success'
-        )
-        setTimeout(function() {
-          
-        }, 1500);
+        Swal.fire("ส่งคำร้องสำเร็จ", "", "success");
+        setTimeout(function () {}, 1500);
       })
       .catch((err) => {
         console.error("Form submission error", err);
-        Swal.fire(
-          'ไม่สำเร็จ',
-          'โปรดตรวจสอบข้อมูล',
-          'error'
-        )
+        Swal.fire("ไม่สำเร็จ", "โปรดตรวจสอบข้อมูล", "error");
       });
   };
 
@@ -131,25 +121,30 @@ function FormCompany() {
       user.add(parseInt(id));
       const found = collegians.find((element) => element.id === parseInt(id));
       currentUser.add(found);
-      User = Array.from(currentUser);
-      //console.log(User);
-      setAddUser(currentUser);
+      //User = Array.from(currentUser);
+      console.log(user);
+      setAddUser(Array.from(currentUser));
       setFormData({
         ...formData,
-        userIds: Array.from(user)
-      })
-      // var table = document.getElementById("myTable");
-      // var row = table.insertRow(0);
-      // var cell1 = row.insertCell(0);
-      // var cell2 = row.insertCell(1);
-      // var cell3 = row.insertCell(2);
-      // var cell4 = row.insertCell(3);
-      // cell1.innerHTML = found.prefix;
-      // cell2.innerHTML = found.firstName;
-      // cell3.innerHTML = found.lastName;
+        userIds: Array.from(user),
+      });
 
       Swal.fire(`เพิ่มสำเร็จ`, "", "success");
     }
+  }
+  function handleDelete(id){
+    currentUser.forEach((point)=>{
+      if(point.id === id){
+        currentUser.delete(point)
+      }
+    })
+    user.delete(id)
+    setAddUser(Array.from(currentUser))
+    console.log(user)
+    setFormData({
+      ...formData,
+      userIds: Array.from(user),
+    });
   }
   return (
     <div className="content-wrapper">
@@ -360,12 +355,23 @@ function FormCompany() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
+                          {addUser.map((data, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>{data.prefix}</td>
+                                <td>{data.firstName}</td>
+                                <td>{data.lastName}</td>
+                                <td>
+                                  <button type="button"
+                                    className="text-decoration-none btn btn-sm btn-danger ml-1"
+                                    onClick={() => handleDelete(data.id)}
+                                  >
+                                    ลบ
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>
