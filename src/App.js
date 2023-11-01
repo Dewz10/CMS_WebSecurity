@@ -14,6 +14,7 @@ import CheckStatusCompany from "./views/company/CheckStatusCompany";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import UpdateForm from "./views/students/UpdateForm";
+import UpdateFormCompany from "./views/company/UpdateFormCompany";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -215,6 +216,7 @@ function App() {
               <Route index element={<FormCompany />} />
               <Route path="comregisters" element={<FormCompany />} />
               <Route path="companystatus" element={<CheckStatusCompany />} />
+              <Route path="updateCom/:id" element={<UpdateFormCompany />} />
             </Route>
           )}
 

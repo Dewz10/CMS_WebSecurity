@@ -115,7 +115,7 @@ function CheckStatusCompany() {
                           <span className={cn}>{message}</span>
                         </td>
                         <td>
-                          <Link className="text-decoration-none btn btn-sm btn-warning">
+                          <Link className="text-decoration-none btn btn-sm btn-warning" to={'/updateCom/'+data.id}>
                             แก้ไข
                           </Link>
                           <button className="text-decoration-none btn btn-sm btn-danger ml-1" onClick={handleDelete}>
