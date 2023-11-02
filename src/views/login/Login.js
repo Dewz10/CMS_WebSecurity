@@ -3,12 +3,14 @@ import "./login.css";
 import kuLogo from "../../assets/ku-logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import CryptoJS from 'crypto-js'
+import Swal from "sweetalert2";
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:3000/auth/login", {
@@ -36,6 +38,22 @@ function Login({ onLogin }) {
       }
     } catch (error) {
       console.error("An error occurred.", error);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'error',
+        title: 'Invalid username or password'
+      })
     }
   };
 
