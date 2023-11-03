@@ -8,12 +8,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-import '../../index.css'
+import "../../index.css";
 import { getAllRequest } from "../../services/internshipService";
 import NotFound from "../pageHandle/NotFound";
 
 function MyForm({ selectedRole }) {
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const [company, setCompany] = useState([]);
   useEffect(() => {
     getAllCompany()
@@ -53,36 +53,40 @@ function MyForm({ selectedRole }) {
   const [file, setFile] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [rounds,setRounds] = useState([])
-  useEffect(()=>{
-    axios.get('http://localhost:3000/internship/application',{
-      headers: {
-        Authorization: 'Bearer '+localStorage.getItem('access_token')
-      }
-    })
-    .then(res => setRounds(res.data.data))
-    .catch(err => console.error(err))
-  },[])
-  const [round,setRound] = useState()
-  useEffect(()=>setRound(rounds[rounds.length-1]))
-  const [request,setRequest] = useState([])
-  useEffect(()=>{
+  const [rounds, setRounds] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/internship/application", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+      .then((res) => setRounds(res.data.data))
+      .catch((err) => console.error(err));
+  }, []);
+  const [round, setRound] = useState();
+  useEffect(() => setRound(rounds[rounds.length - 1]));
+  const [request, setRequest] = useState([]);
+  useEffect(() => {
     getAllRequest()
-    .then(res => setRequest(res.data))
-    .catch(err => console.error(err))
-  },[])
-  const [canPress,setCanPress] = useState(false)
-  function handlePress(){
-    if(round === null || round?.applicationStatus === "Close" || round?.applicationStatus === "Considering"){
-      setCanPress(true)
-    }
-    else{
-      setCanPress(false)
+      .then((res) => setRequest(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+  const [canPress, setCanPress] = useState(false);
+  function handlePress() {
+    if (
+      round === null ||
+      round?.applicationStatus === "Close" ||
+      round?.applicationStatus === "Considering"
+    ) {
+      setCanPress(true);
+    } else {
+      setCanPress(false);
     }
   }
   const handleFormSubmit = (e) => {
     e.preventDefault();
-  
+
     const requestData = {
       requestDate: new Date().toISOString(),
       phone,
@@ -99,42 +103,36 @@ function MyForm({ selectedRole }) {
       accomodation: accommodationValue,
       file: file,
       applicationRoundId: round.id,
-      companyId: parseInt(selectedCompany)
+      companyId: parseInt(selectedCompany),
     };
-  
+
     console.log("Form Data (JSON):", JSON.stringify(requestData));
-  
+
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("access_token"),
       "Content-Type": "multipart/form-data",
     };
-  
+
     axios
-      .post("http://localhost:3000/internship/request", requestData, { headers })
+      .post("http://localhost:3000/internship/request", requestData, {
+        headers,
+      })
       .then((res) => {
         console.log("Form submitted successfully", res.data);
         setIsSubmitting(false);
-        Swal.fire(
-          'ส่งคำร้องสำเร็จ',
-          '',
-          'success'
-        )
-        setTimeout(function() {
-          window.location.href='/status'
+        Swal.fire("ส่งคำร้องสำเร็จ", "", "success");
+        setTimeout(function () {
+          window.location.href = "/status";
         }, 1500);
       })
       .catch((err) => {
         console.error("Form submission error", err);
         setIsSubmitting(false);
-        Swal.fire(
-          'ไม่สำเร็จ',
-          'โปรดตรวจสอบข้อมูล',
-          'error'
-        )
+        Swal.fire("ไม่สำเร็จ", "โปรดตรวจสอบข้อมูล", "error");
       });
-  
+
     setIsSubmitting(true);
-  };  
+  };
 
   const handleAccommodationChange = (e) => {
     setAccommodationValue(e.target.value);
@@ -334,7 +332,13 @@ function MyForm({ selectedRole }) {
                         controlId="other_accommodation"
                       >
                         <Form.Label>กรณีอื่นๆ</Form.Label>
-                        <Form.Control type="text" placeholder="กรณีอื่นๆ" onChange={(e) => setAccommodationValue(e.target.value)}/>
+                        <Form.Control
+                          type="text"
+                          placeholder="กรณีอื่นๆ"
+                          onChange={(e) =>
+                            setAccommodationValue(e.target.value)
+                          }
+                        />
                       </Form.Group>
                     )}
                   </div>
@@ -433,12 +437,13 @@ function MyForm({ selectedRole }) {
                         onChange={(e) => setPaymentAmount(e.target.value)}
                       />
                     </Form.Group>
-                    <Form.Group
-                      className="margin-top-12"
-                      controlId="formFile"
-                    >
+                    <Form.Group className="margin-top-12" controlId="formFile">
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
-                      <input type="file" className="form-control h-100" onChange={handleFileChange}/>
+                      <input
+                        type="file"
+                        className="form-control h-100"
+                        onChange={handleFileChange}
+                      />
                     </Form.Group>
                     <Form.Group className="margin-top-12">
                       <a
@@ -468,7 +473,11 @@ function MyForm({ selectedRole }) {
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
-                    disabled={handlePress} // Disable the button while submitting
+                    disabled={
+                      round === null ||
+                      round?.applicationStatus === "Close" ||
+                      round?.applicationStatus === "Considering"
+                    }
                   >
                     {isSubmitting ? "กำลังส่งคำร้อง..." : "ส่งคำร้อง"}
                   </button>
