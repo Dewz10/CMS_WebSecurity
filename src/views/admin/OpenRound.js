@@ -69,7 +69,7 @@ function OpenRound() {
         <div>
           <Button variant="info" onClick={() => handleEdit(row)}>
             แก้ไข
-          </Button>
+          </Button>{' '}
           <Button variant="danger" onClick={() => handleDelete(row)}>
             ลบ
           </Button>
