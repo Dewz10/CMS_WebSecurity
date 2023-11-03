@@ -49,9 +49,7 @@ function CheckStatusCompany() {
       }
     });
   }
-  function TableModal(){
-
-  }
+  function TableModal() {}
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -91,6 +89,7 @@ function CheckStatusCompany() {
                     <th>รอบที่</th>
                     <th>รายชื่อนิสิต</th>
                     <th>สถานะ</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -113,17 +112,28 @@ function CheckStatusCompany() {
                       <tr key={i}>
                         <td>{data.applicationRound.name}</td>
                         <td>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => {setModalShow(true)}}
-                          >
-                            รายชื่อนิสิต
-                          </button>
-                          <TableModal
-                            show={modalShow}
-                            onHide={() => setModalShow(false)}
-                            collegians={i}
-                          />
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>คำนำหน้า</th>
+                                <th>ชื่อจริง</th>
+                                <th>นามสกุล</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {
+                                Array.from(data.collegians).map((data,i)=>{
+                                  return(
+                                    <tr key={i}>
+                                      <td>{data.prefix}</td>
+                                      <td>{data.firstName}</td>
+                                      <td>{data.lastName}</td>
+                                    </tr>
+                                  )
+                                })
+                              }
+                            </tbody>
+                          </table>
                         </td>
                         <td>
                           <span className={cn}>{message}</span>
@@ -155,52 +165,6 @@ function CheckStatusCompany() {
       </div>
       {/* /.content */}
     </div>
-  );
-}
-
-function TableModal(props) {
-  const id = props.collegians
-  console.log(id)
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          รายชื่อนิสิต
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <table className="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>คำนำหน้า</th>
-              <th>ชื่อจริง</th>
-              <th>นามสกุล</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* {
-              Array.from(collegians).map((data,i)=>{
-                return(
-                  <tr key={i}>
-                    <td>{data.prefix}</td>
-                    <td>{data.firstName}</td>
-                    <td>{data.lastName}</td>
-                  </tr>
-                )
-              })
-            } */}
-          </tbody>
-        </table>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
   );
 }
 
