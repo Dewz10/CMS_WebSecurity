@@ -223,7 +223,7 @@ function FormCompany() {
                         onChange={handleChange}
                       />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="margin-top-12">
                       <Form.Label>สถานประกอบการ</Form.Label>
                       <Form.Control
                         type="text"
@@ -232,7 +232,7 @@ function FormCompany() {
                         value={profile?.data?.firstName}
                       />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="margin-top-12">
                       <Form.Label>ชื่อผู้ประสานงาน</Form.Label>
                       <Form.Control
                         type="text"
@@ -242,7 +242,7 @@ function FormCompany() {
                         onChange={handleChange}
                       />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="margin-top-12">
                       <Form.Label>โทร</Form.Label>
                       <Form.Control
                         type="text"
@@ -252,7 +252,7 @@ function FormCompany() {
                         onChange={handleChange}
                       />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="margin-top-12">
                       <Form.Label>E-mail</Form.Label>
                       <Form.Control
                         type="email"
@@ -288,7 +288,7 @@ function FormCompany() {
                       </div>
                     </div>
                     <Form.Group>
-                      <Form.Label>
+                      <Form.Label style={{marginTop: "16px"}}>
                         จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ
                         ไม่มีค่าตอบแทน)
                       </Form.Label>
@@ -300,7 +300,7 @@ function FormCompany() {
                         onChange={handleChange}
                       />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{marginTop: "22px"}}>
                       <Form.Label>ที่พัก</Form.Label>
                       <div className="form-check form-check-inline">
                         <Form.Check
