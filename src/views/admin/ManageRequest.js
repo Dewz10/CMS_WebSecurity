@@ -67,6 +67,56 @@ function ManageRequest() {
     },
   ];
 
+  const columnCompany = [
+    {
+      name: "Company Name",
+      // selector: (row) => row.user.username,
+      sortable: true,
+    },
+    {
+      name: "Requester",
+      // selector: (row) => row.user.firstName + " " + row.user.lastName,
+      sortable: true,
+    },
+    {
+      name: "Request Date",
+      // selector: (row) => row.requestDate,
+      sortable: true,
+      // cell: (row) => {
+      //   const date = new Date(row.requestDate);
+      //   return date.toLocaleDateString("th-TH");
+      // },
+    },
+    {
+      name: "Request Status",
+      // selector: (row) => row.requestStatus,
+      sortable: true,
+    },
+    {
+      name: "Actions",
+      // cell: (row) => (
+      //   <div>
+      //     {row.requestStatus === "Waiting to consider" && (
+      //       <Button variant="success" onClick={() => handleAccept(row)}>
+      //         <i className="fas fa-check"></i>
+      //       </Button>
+      //     )}{" "}
+      //     {row.requestStatus === "Waiting to consider" && (
+      //       <Button variant="danger" onClick={() => handleReject(row)}>
+      //         <i className="fas fa-times"></i>
+      //       </Button>
+      //     )}{" "}
+      //     <Link
+      //       className="text-decoration-none btn btn-primary"
+      //       to={"/view/" + row.id}
+      //     >
+      //       <i className="fas fa-eye"></i>
+      //     </Link>
+      //   </div>
+      // ),
+    },
+  ];
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/internship/application", {
@@ -176,8 +226,21 @@ function ManageRequest() {
       </section>
       <section className="content">
         <div className="container-fluid">
-          <Form.Group>
-            <Form.Label>ค้นหา</Form.Label>
+          <div className="card">
+          <div className="card-header">
+              <h3 className="card-title">ค้นหา</h3>
+              <div className="card-tools">
+                <button
+                  type="button"
+                  className="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i className="fas fa-minus" />
+                </button>
+              </div>
+            </div>
+            <div className="card-body">
+            <Form.Group>
             <Form.Control
               as="select"
               value={selectedApplication}
@@ -187,12 +250,56 @@ function ManageRequest() {
               {applicationOptions}
             </Form.Control>
           </Form.Group>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="content">
+        <div className="container-fluid">
           <div className="card">
+          <div className="card-header">
+              <h3 className="card-title">จัดการคำร้องนิสิต</h3>
+              <div className="card-tools">
+                <button
+                  type="button"
+                  className="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i className="fas fa-minus" />
+                </button>
+              </div>
+            </div>
             <div className="card-body">
               <DataTable
-                title="จัดการคำร้อง"
+                // title="จัดการคำร้องนิสิต"
                 pagination
                 columns={columns}
+                data={data}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="content">
+        <div className="container-fluid">
+          <div className="card">
+          <div className="card-header">
+              <h3 className="card-title">จัดการคำร้องบริษัท</h3>
+              <div className="card-tools">
+                <button
+                  type="button"
+                  className="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i className="fas fa-minus" />
+                </button>
+              </div>
+            </div>
+            <div className="card-body">
+              <DataTable
+                // title="จัดการคำร้องบริษัท"
+                pagination
+                columns={columnCompany}
                 data={data}
               />
             </div>
