@@ -3,6 +3,7 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { Button, Form, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function ManageRequest() {
   const [data, setData] = useState([]);
@@ -46,11 +47,14 @@ function ManageRequest() {
               Reject
             </Button>
           )}
+          <Link to={`/view/${row.id}`}>
+            <Button variant="primary">View Details</Button>
+          </Link>
         </div>
       ),
     },
   ];
-  
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/internship/application", {
@@ -73,13 +77,13 @@ function ManageRequest() {
   const fetchData = (selectedAppId) => {
     console.log(selectedAppId);
     let url;
-    
+
     if (selectedAppId === 0) {
       url = "http://localhost:3000/internship/request";
     } else {
       url = `http://localhost:3000/internship/request/application-round/${selectedAppId}`;
     }
-  
+
     axios
       .get(url, {
         headers: {
@@ -92,7 +96,7 @@ function ManageRequest() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  };  
+  };
 
   const handleApplicationChange = (e) => {
     setSelectedApplication(e.target.value);
@@ -110,7 +114,7 @@ function ManageRequest() {
     const requestData = {
       requestStatus: status,
     };
-  
+
     Swal.fire({
       title: "ยืนยันการดำเนินการ",
       text: `คุณต้องการปรับเปลี่ยนสถานะเป็น "${status}"?`,
@@ -123,15 +127,21 @@ function ManageRequest() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .patch(`http://localhost:3000/internship/request/${requestId}`, requestData, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
-            },
-          })
+          .patch(
+            `http://localhost:3000/internship/request/${requestId}`,
+            requestData,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
+            }
+          )
           .then((response) => {
-            Swal.fire("สำเร็จ!", "ปรับเปลี่ยนสถานะสำเร็จ", "success").then(() => {
-              fetchData(selectedApplication);
-            });
+            Swal.fire("สำเร็จ!", "ปรับเปลี่ยนสถานะสำเร็จ", "success").then(
+              () => {
+                fetchData(selectedApplication);
+              }
+            );
           })
           .catch((error) => {
             Swal.fire("ข้อผิดพลาด!", "ไม่สามารถปรับเปลี่ยนสถานะ", "error");
@@ -140,7 +150,6 @@ function ManageRequest() {
       }
     });
   };
-  
 
   const applicationOptions = applications.map((app) => (
     <option key={app.id} value={app.id}>
@@ -157,7 +166,11 @@ function ManageRequest() {
         <div className="container-fluid">
           <Form.Group>
             <Form.Label>ค้นหา</Form.Label>
-            <Form.Control as="select" value={selectedApplication} onChange={handleApplicationChange}>
+            <Form.Control
+              as="select"
+              value={selectedApplication}
+              onChange={handleApplicationChange}
+            >
               <option value={0}>ทั้งหมด</option>
               {applicationOptions}
             </Form.Control>

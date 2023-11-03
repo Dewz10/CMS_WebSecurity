@@ -16,6 +16,7 @@ import axios from "axios";
 import UpdateForm from "./views/students/UpdateForm";
 import UpdateFormCompany from "./views/company/UpdateFormCompany";
 import NotFound from "./views/pageHandle/NotFound";
+import FormView from "./views/admin/FormView"
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -244,6 +245,10 @@ function App() {
               <Route path="openrounds" element={<OpenRound />} />
               <Route path="managerequests" element={<ManageRequest />} />
               <Route path="addcompany" element={<AddCompany />} />
+              <Route
+                path="view/:id"
+                element={<FormView selectedRole={authenticatedUser} />}
+              />
               <Route
                 path="*"
                 element={<NotFound />}
