@@ -71,8 +71,17 @@ function ManageRequest() {
   }, [selectedApplication]);
 
   const fetchData = (selectedAppId) => {
+    console.log(selectedAppId);
+    let url;
+    
+    if (selectedAppId === 0) {
+      url = "http://localhost:3000/internship/request";
+    } else {
+      url = `http://localhost:3000/internship/request/application-round/${selectedAppId}`;
+    }
+  
     axios
-      .get(`http://localhost:3000/internship/request/application-round/${selectedAppId}`, {
+      .get(url, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -83,7 +92,7 @@ function ManageRequest() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  };
+  };  
 
   const handleApplicationChange = (e) => {
     setSelectedApplication(e.target.value);
