@@ -49,6 +49,7 @@ const UpdateForm = ({ selectedRole }) => {
 
     return [year, month, day].join("-");
   }
+  const [attFile,setAttFile] = useState()
 
   const [formData, setFormData] = useState({
     requestDate: "",
@@ -65,7 +66,6 @@ const UpdateForm = ({ selectedRole }) => {
     paymentAmount: "",
     accomodation: "",
     companyId: 0,
-    file: "",
   });
   useEffect(() => {
     axios
@@ -91,8 +91,8 @@ const UpdateForm = ({ selectedRole }) => {
           paymentAmount: res.data?.data.paymentAmount,
           accomodation: res.data?.data.accomodation,
           companyId: res.data?.data.company?.id,
-          file: res.data.data.file,
         });
+        setAttFile(res.data.data.file)
       })
       .catch((err) => console.error(err));
   }, []);
@@ -188,7 +188,7 @@ const UpdateForm = ({ selectedRole }) => {
       ...formData,
       file: attachedFile,
     });
-    console.log(atob(formData.file.data));
+    //console.log(atob(formData.file.data));
   };
 
   if (selectedRole !== "user") {
@@ -574,7 +574,7 @@ const UpdateForm = ({ selectedRole }) => {
               </div>
             </div>
             <div className="card-body">
-              <embed src={`data:application/pdf;base64,${formData.file.data}`} width="100%" height="750px"/>
+              <embed src={`data:application/pdf;base64,${attFile?.data}`} width="100%" height="750px"/>
             </div>
           </div>
         </div>
