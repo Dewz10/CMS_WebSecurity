@@ -59,7 +59,7 @@ const FormView = ({ selectedRole }) => {
         },
       })
       .then((res) => {
-        // console.log(res.data.data.user);
+        // console.log(res.data.data.file);
         setFormData({
           ...formData,
           username: res.data?.data.user.username,

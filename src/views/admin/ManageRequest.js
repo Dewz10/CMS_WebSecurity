@@ -14,14 +14,23 @@ function ManageRequest() {
 
   const columns = [
     {
-      name: "Phone",
-      selector: (row) => row.phone,
+      name: "ID",
+      selector: (row) => row.user.username,
+      sortable: true,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.user.firstName + " " + row.user.lastName,
       sortable: true,
     },
     {
       name: "Request Date",
       selector: (row) => row.requestDate,
       sortable: true,
+      cell: (row) => {
+        const date = new Date(row.requestDate);
+        return date.toLocaleDateString("th-TH");
+      },
     },
     {
       name: "Internship Position",
@@ -39,19 +48,19 @@ function ManageRequest() {
         <div>
           {row.requestStatus === "Waiting to consider" && (
             <Button variant="success" onClick={() => handleAccept(row)}>
-              Accept
+              <i className="fas fa-check"></i>
             </Button>
-          )}
+          )}{" "}
           {row.requestStatus === "Waiting to consider" && (
             <Button variant="danger" onClick={() => handleReject(row)}>
-              Reject
+              <i className="fas fa-times"></i>
             </Button>
-          )}
+          )}{" "}
           <Link
             className="text-decoration-none btn btn-primary"
             to={"/view/" + row.id}
           >
-            แก้ไข
+            <i className="fas fa-eye"></i>
           </Link>
         </div>
       ),
