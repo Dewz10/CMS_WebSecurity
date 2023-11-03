@@ -500,7 +500,7 @@ const UpdateForm = ({ selectedRole }) => {
                       controlId="exampleInputFile"
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
-                      <p style={{color: "red", fontSize: "12px"}}>* หากต้องการเปลี่ยนไฟล์ให้ อัปโหลดใหม่</p>
+                      <p style={{color: "red", fontSize: "15px"}}>* หากต้องการเปลี่ยนไฟล์ ให้อัปโหลดใหม่</p>
                       <div className="input-group">
                         <input
                           type="file"
