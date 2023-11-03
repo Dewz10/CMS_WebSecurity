@@ -15,6 +15,7 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import UpdateForm from "./views/students/UpdateForm";
 import UpdateFormCompany from "./views/company/UpdateFormCompany";
+import NotFound from "./views/pageHandle/NotFound";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -199,6 +200,10 @@ function App() {
                 path="update/:id"
                 element={<UpdateForm selectedRole={authenticatedUser} />}
               />
+              <Route
+                path="*"
+                element={<NotFound />}
+              />
             </Route>
           )}
 
@@ -217,6 +222,10 @@ function App() {
               <Route path="comregisters" element={<FormCompany />} />
               <Route path="companystatus" element={<CheckStatusCompany />} />
               <Route path="updateCom/:id" element={<UpdateFormCompany />} />
+              <Route
+                path="*"
+                element={<NotFound />}
+              />
             </Route>
           )}
 
@@ -235,6 +244,10 @@ function App() {
               <Route path="openrounds" element={<OpenRound />} />
               <Route path="managerequests" element={<ManageRequest />} />
               <Route path="addcompany" element={<AddCompany />} />
+              <Route
+                path="*"
+                element={<NotFound />}
+              />
             </Route>
           )}
         </Routes>

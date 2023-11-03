@@ -3,9 +3,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { Button, Modal } from "react-bootstrap";
 
 function CheckStatusCompany() {
+  const [modalShow, setModalShow] = React.useState(false);
   const [companyRequest, setCompanyRequest] = useState([]);
   useEffect(() => {
     axios
@@ -28,27 +29,28 @@ function CheckStatusCompany() {
 
     return [year, month, day].join("-");
   }
-  function showNisit(){
-
-  }
-  function handleDelete(){
+  function showNisit() {}
+  function handleDelete() {
     Swal.fire({
-      title: 'ยืนยันที่จะลบ?',
+      title: "ยืนยันที่จะลบ?",
       text: "หากทำแล้วจะไม่สามารถย้อนกลับมาได้อีก",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'ยืนยัน'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire(
-          'ข้อมูลถูกลบเรียบร้อย',
-          'คำร้องของคุณถูกลบเรียบร้อย',
-          'success'
-        )
+          "ข้อมูลถูกลบเรียบร้อย",
+          "คำร้องของคุณถูกลบเรียบร้อย",
+          "success"
+        );
       }
-    })
+    });
+  }
+  function TableModal(){
+
   }
   return (
     <div className="content-wrapper">
@@ -92,7 +94,7 @@ function CheckStatusCompany() {
                   </tr>
                 </thead>
                 <tbody>
-                  {companyRequest?.map((data, i) => {
+                  {Array.from(companyRequest).map((data, i) => {
                     let cn;
                     let message;
                     if (!data.requestStatus.localeCompare("Pass")) {
@@ -109,16 +111,34 @@ function CheckStatusCompany() {
                     }
                     return (
                       <tr key={i}>
-                        <td>{data?.applicationRound.name}</td>
-                        <td><button className="btn btn-primary">รายชื่อนิสิต</button></td>
+                        <td>{data.applicationRound.name}</td>
+                        <td>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {setModalShow(true)}}
+                          >
+                            รายชื่อนิสิต
+                          </button>
+                          <TableModal
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                            collegians={i}
+                          />
+                        </td>
                         <td>
                           <span className={cn}>{message}</span>
                         </td>
                         <td>
-                          <Link className="text-decoration-none btn btn-sm btn-warning" to={'/updateCom/'+data.id}>
+                          <Link
+                            className="text-decoration-none btn btn-sm btn-warning"
+                            to={"/updateCom/" + data.id}
+                          >
                             แก้ไข
                           </Link>
-                          <button className="text-decoration-none btn btn-sm btn-danger ml-1" onClick={handleDelete}>
+                          <button
+                            className="text-decoration-none btn btn-sm btn-danger ml-1"
+                            onClick={handleDelete}
+                          >
                             ลบ
                           </button>
                         </td>
@@ -135,6 +155,52 @@ function CheckStatusCompany() {
       </div>
       {/* /.content */}
     </div>
+  );
+}
+
+function TableModal(props) {
+  const id = props.collegians
+  console.log(id)
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          รายชื่อนิสิต
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <table className="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>คำนำหน้า</th>
+              <th>ชื่อจริง</th>
+              <th>นามสกุล</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* {
+              Array.from(collegians).map((data,i)=>{
+                return(
+                  <tr key={i}>
+                    <td>{data.prefix}</td>
+                    <td>{data.firstName}</td>
+                    <td>{data.lastName}</td>
+                  </tr>
+                )
+              })
+            } */}
+          </tbody>
+        </table>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 

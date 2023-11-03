@@ -72,6 +72,14 @@ function MyForm({ selectedRole }) {
     .catch(err => console.error(err))
   },[])
   const [canPress,setCanPress] = useState(false)
+  function handlePress(){
+    if(round === null || round?.applicationStatus === "Close" || round?.applicationStatus === "Considering"){
+      setCanPress(true)
+    }
+    else{
+      setCanPress(false)
+    }
+  }
   const handleFormSubmit = (e) => {
     e.preventDefault();
   
@@ -296,8 +304,8 @@ function MyForm({ selectedRole }) {
                           id="customRadioAccommodation1"
                           label="มี"
                           name="customRadioAccommodation"
-                          value="มี"
-                          checked={accommodationValue === "มี"}
+                          value="yes"
+                          checked={accommodationValue === "yes"}
                           onChange={handleAccommodationChange}
                         />
                         <Form.Check
@@ -305,8 +313,8 @@ function MyForm({ selectedRole }) {
                           id="customRadioAccommodation2"
                           label="ไม่มี"
                           name="customRadioAccommodation"
-                          value="ไม่มี"
-                          checked={accommodationValue === "ไม่มี"}
+                          value="no"
+                          checked={accommodationValue === "no"}
                           onChange={handleAccommodationChange}
                         />
                         <Form.Check
@@ -460,7 +468,7 @@ function MyForm({ selectedRole }) {
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
-                    disabled={isSubmitting} // Disable the button while submitting
+                    disabled={handlePress} // Disable the button while submitting
                   >
                     {isSubmitting ? "กำลังส่งคำร้อง..." : "ส่งคำร้อง"}
                   </button>
