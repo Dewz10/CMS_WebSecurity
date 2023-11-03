@@ -47,8 +47,11 @@ function ManageRequest() {
               Reject
             </Button>
           )}
-          <Link to={`/view/${row.id}`}>
-            <Button variant="primary">View Details</Button>
+          <Link
+            className="text-decoration-none btn btn-primary"
+            to={"/view/" + row.id}
+          >
+            แก้ไข
           </Link>
         </div>
       ),

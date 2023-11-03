@@ -137,9 +137,6 @@ function CheckStatus({ selectedRole }) {
                           <span className={cn}>{message}</span>
                         </td>
                         <td>
-                          <iframe
-                            src={`data:application/pdf;base64,${data.file.data}`}
-                          />
                           <Link
                             className="text-decoration-none btn btn-sm btn-warning"
                             to={"/update/" + data.id}

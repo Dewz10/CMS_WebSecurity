@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
-import '../../index.css'
+import "../../index.css";
 
 const UpdateForm = ({ selectedRole }) => {
   let navigate = useNavigate();
@@ -36,21 +36,20 @@ const UpdateForm = ({ selectedRole }) => {
   const [prefix, setPrefix] = useState("");
   const [firstName, setFirstName] = useState(profile?.data?.firstName);
   const [lastName, setLastName] = useState(profile?.data?.lastName);
+  const [file, setFile] = useState(null);
 
   function formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join('-');
-}
- 
+    return [year, month, day].join("-");
+  }
+
   const [formData, setFormData] = useState({
     requestDate: "",
     phone: "",
@@ -66,6 +65,7 @@ const UpdateForm = ({ selectedRole }) => {
     paymentAmount: "",
     accomodation: "",
     companyId: 0,
+    file: "",
   });
   useEffect(() => {
     axios
@@ -91,11 +91,12 @@ const UpdateForm = ({ selectedRole }) => {
           paymentAmount: res.data?.data.paymentAmount,
           accomodation: res.data?.data.accomodation,
           companyId: res.data?.data.company?.id,
+          file: res.data.data.file,
         });
       })
       .catch((err) => console.error(err));
   }, []);
-  console.log(formData)
+  console.log(formData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
@@ -114,48 +115,47 @@ const UpdateForm = ({ selectedRole }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    
-
     Swal.fire({
-      title: 'ยืนยันการแก้ไข',
+      title: "ยืนยันการแก้ไข",
       text: "",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#03a96b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'ยืนยัน',
-      cancelButtonText: 'ยกเลิก'
+      confirmButtonColor: "#03a96b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
-    if(result.isConfirmed){
-      axios.patch('http://localhost:3000/internship/request/'+id,formData,{
-        headers: {
-          Authorization: 'Bearer '+localStorage.getItem("access_token")
-        }
-      })
-      .then(res => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'แก้ไขข้อมูลสำเร็จ',
-            'ข้อมูลของคุณถูกแก้ไขเรียบร้อย',
-            'success'
-          )
-        }
-        setTimeout(function() {
-          window.location.href='/status'
-        }, 1500);
-      })
-      .catch(err => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'แก้ไขข้อมูลไม่สำเร็จ',
-            'โปรดตรวจสอบข้อมูลอีกครั้ง',
-            'error'
-            )
-          }
-      })
-    }
-      
-    })
+      if (result.isConfirmed) {
+        axios
+          .patch("http://localhost:3000/internship/request/" + id, formData, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "แก้ไขข้อมูลสำเร็จ",
+                "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                "success"
+              );
+            }
+            setTimeout(function () {
+              window.location.href = "/status";
+            }, 1500);
+          })
+          .catch((err) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "แก้ไขข้อมูลไม่สำเร็จ",
+                "โปรดตรวจสอบข้อมูลอีกครั้ง",
+                "error"
+              );
+            }
+          });
+      }
+    });
 
     setIsSubmitting(true);
   };
@@ -163,29 +163,32 @@ const UpdateForm = ({ selectedRole }) => {
     if (e.target.name === "companyId") {
       // Update formData if the condition is true
       setFormData({
-          ...formData,
-          [e.target.name]: parseInt(e.target.value),
+        ...formData,
+        [e.target.name]: parseInt(e.target.value),
       });
-  }else if(e.target.name === "startDate" || e.target.name === "endDate"){
-    let date = new Date(e.target.value)
-    setFormData({
-      ...formData,
-      [e.target.name]: date,
-  });
-  }
-   else {
+    } else if (e.target.name === "startDate" || e.target.name === "endDate") {
+      let date = new Date(e.target.value);
+      setFormData({
+        ...formData,
+        [e.target.name]: date,
+      });
+    } else {
       // Update formData differently if the condition is false
       setFormData({
-          ...formData,
-          [e.target.name]: e.target.value
-          // Update other properties as needed
+        ...formData,
+        [e.target.name]: e.target.value,
+        // Update other properties as needed
       });
-  }
+    }
   };
 
-
   const handleFileChange = (e) => {
-    
+    const attachedFile = e.target.files[0];
+    setFormData({
+      ...formData,
+      file: attachedFile,
+    });
+    console.log(atob(formData.file.data));
   };
 
   if (selectedRole !== "user") {
@@ -383,11 +386,7 @@ const UpdateForm = ({ selectedRole }) => {
                         controlId="other_accommodation"
                       >
                         <Form.Label>กรณีอื่นๆ</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="กรณีอื่นๆ"
-                          
-                        />
+                        <Form.Control type="text" placeholder="กรณีอื่นๆ" />
                       </Form.Group>
                     )}
                   </div>
@@ -502,7 +501,12 @@ const UpdateForm = ({ selectedRole }) => {
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
                       <div className="input-group">
-                      <input type="file" className="form-control h-100"/>
+                        <input
+                          type="file"
+                          className="form-control h-100"
+                          defaultValue={formData.file}
+                          onChange={handleFileChange}
+                        />
                       </div>
                     </Form.Group>
                     <Form.Group className="margin-top-12">
@@ -533,7 +537,7 @@ const UpdateForm = ({ selectedRole }) => {
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
-                   // Disable the button while submitting
+                    // Disable the button while submitting
                   >
                     แก้ไข
                   </button>
@@ -550,6 +554,27 @@ const UpdateForm = ({ selectedRole }) => {
                   </button>
                 </div>
               </Form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="content">
+        <div className="container-fluid">
+          <div className="card card-default">
+            <div className="card-header">
+              <h3 className="card-title">เอกสาร</h3>
+              <div className="card-tools">
+                <button
+                  type="button"
+                  className="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i className="fas fa-minus" />
+                </button>
+              </div>
+            </div>
+            <div className="card-body">
+              <embed src={`data:application/pdf;base64,${formData.file.data}`} width="100%" height="750px"/>
             </div>
           </div>
         </div>

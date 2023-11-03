@@ -3,16 +3,15 @@ import formpdf from "../../assets/แบบฟอร์มสหกิจศึ�
 import { getAllCompany } from "../../services/companyService";
 import axios from "axios";
 import { Modal, Button, Form, Col, file } from "react-bootstrap";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
-import '../../index.css'
+import "../../index.css";
 
 const FormView = ({ selectedRole }) => {
   let navigate = useNavigate();
   const { id } = useParams();
-  console.log(id)
+  console.log(id);
   const [company, setCompany] = useState([]);
   useEffect(() => {
     getAllCompany()
@@ -22,18 +21,16 @@ const FormView = ({ selectedRole }) => {
 
   function formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join('-');
-}
- 
+    return [year, month, day].join("-");
+  }
+
   const [formData, setFormData] = useState({
     requestDate: "",
     phone: "",
@@ -58,7 +55,7 @@ const FormView = ({ selectedRole }) => {
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res.data.data);
         setFormData({
           ...formData,
           requestDate: res.data?.data.requestDate,
@@ -86,45 +83,45 @@ const FormView = ({ selectedRole }) => {
     e.preventDefault();
 
     Swal.fire({
-      title: 'ยืนยันการแก้ไข',
+      title: "ยืนยันการแก้ไข",
       text: "",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#03a96b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'ยืนยัน',
-      cancelButtonText: 'ยกเลิก'
+      confirmButtonColor: "#03a96b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
-    if(result.isConfirmed){
-      axios.patch('http://localhost:3000/internship/request/'+id,formData,{
-        headers: {
-          Authorization: 'Bearer '+localStorage.getItem("access_token")
-        }
-      })
-      .then(res => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'แก้ไขข้อมูลสำเร็จ',
-            'ข้อมูลของคุณถูกแก้ไขเรียบร้อย',
-            'success'
-          )
-        }
-        setTimeout(function() {
-          window.location.href='/status'
-        }, 1500);
-      })
-      .catch(err => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'แก้ไขข้อมูลไม่สำเร็จ',
-            'โปรดตรวจสอบข้อมูลอีกครั้ง',
-            'error'
-            )
-          }
-      })
-    }
-      
-    })
+      if (result.isConfirmed) {
+        axios
+          .patch("http://localhost:3000/internship/request/" + id, formData, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          })
+          .then((res) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "แก้ไขข้อมูลสำเร็จ",
+                "ข้อมูลของคุณถูกแก้ไขเรียบร้อย",
+                "success"
+              );
+            }
+            setTimeout(function () {
+              window.location.href = "/status";
+            }, 1500);
+          })
+          .catch((err) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "แก้ไขข้อมูลไม่สำเร็จ",
+                "โปรดตรวจสอบข้อมูลอีกครั้ง",
+                "error"
+              );
+            }
+          });
+      }
+    });
 
     setIsSubmitting(true);
   };
@@ -132,32 +129,27 @@ const FormView = ({ selectedRole }) => {
     if (e.target.name === "companyId") {
       // Update formData if the condition is true
       setFormData({
-          ...formData,
-          [e.target.name]: parseInt(e.target.value),
+        ...formData,
+        [e.target.name]: parseInt(e.target.value),
       });
-  }else if(e.target.name === "startDate" || e.target.name === "endDate"){
-    let date = new Date(e.target.value)
-    setFormData({
-      ...formData,
-      [e.target.name]: date,
-  });
-  }
-   else {
+    } else if (e.target.name === "startDate" || e.target.name === "endDate") {
+      let date = new Date(e.target.value);
+      setFormData({
+        ...formData,
+        [e.target.name]: date,
+      });
+    } else {
       // Update formData differently if the condition is false
       setFormData({
-          ...formData,
-          [e.target.name]: e.target.value
-          // Update other properties as needed
+        ...formData,
+        [e.target.name]: e.target.value,
+        // Update other properties as needed
       });
-  }
+    }
   };
 
 
-  const handleFileChange = (e) => {
-    
-  };
-
-  if (selectedRole !== "user") {
+  if (selectedRole !== "admin") {
     return <p>คุณไม่มีสิทธิ์การเข้าถึงหน้านี้</p>;
   }
   return (
@@ -352,11 +344,7 @@ const FormView = ({ selectedRole }) => {
                         controlId="other_accommodation"
                       >
                         <Form.Label>กรณีอื่นๆ</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="กรณีอื่นๆ"
-                          
-                        />
+                        <Form.Control type="text" placeholder="กรณีอื่นๆ" />
                       </Form.Group>
                     )}
                   </div>
@@ -471,7 +459,7 @@ const FormView = ({ selectedRole }) => {
                     >
                       <Form.Label>แนบไฟล์คำร้องขอฝึกงาน/สหกิจศึกษา</Form.Label>
                       <div className="input-group">
-                      <input type="file" className="form-control h-100"/>
+                        <input type="file" className="form-control h-100" />
                       </div>
                     </Form.Group>
                     <Form.Group className="margin-top-12">
@@ -502,7 +490,7 @@ const FormView = ({ selectedRole }) => {
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
-                   // Disable the button while submitting
+                    // Disable the button while submitting
                   >
                     แก้ไข
                   </button>
