@@ -172,6 +172,10 @@ function ManageRequest() {
     updateRequestStatus(row.id, "Not pass");
   };
 
+  const handleReload = () => {
+    window.location.reload();
+  }
+
   const updateRequestStatus = (requestId, status) => {
     const requestData = {
       requestStatus: status,
@@ -228,7 +232,7 @@ function ManageRequest() {
         <div className="container-fluid">
           <div className="card">
           <div className="card-header">
-              <h3 className="card-title">ค้นหา</h3>
+              <h3 className="card-title">เลือกรอบ</h3>
               <div className="card-tools">
                 <button
                   type="button"
@@ -260,6 +264,13 @@ function ManageRequest() {
           <div className="card-header">
               <h3 className="card-title">จัดการคำร้องนิสิต</h3>
               <div className="card-tools">
+              <button
+                  type="button"
+                  className="btn btn-tool"
+                  onClick={handleReload}
+                >
+                  <i className="fa fa-refresh" />
+                </button>
                 <button
                   type="button"
                   className="btn btn-tool"
