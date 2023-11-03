@@ -32,6 +32,9 @@ const FormView = ({ selectedRole }) => {
   }
 
   const [formData, setFormData] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
     requestDate: "",
     phone: "",
     facebookName: "",
@@ -46,6 +49,7 @@ const FormView = ({ selectedRole }) => {
     paymentAmount: "",
     accomodation: "",
     companyId: 0,
+    file: "",
   });
   useEffect(() => {
     axios
@@ -55,9 +59,12 @@ const FormView = ({ selectedRole }) => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data.user);
         setFormData({
           ...formData,
+          username: res.data?.data.user.username,
+          firstName: res.data?.data.user.firstName,
+          lastName: res.data?.data.user.lastName,
           requestDate: res.data?.data.requestDate,
           phone: res.data?.data.phone,
           facebookName: res.data?.data.facebookName,
@@ -72,6 +79,7 @@ const FormView = ({ selectedRole }) => {
           paymentAmount: res.data?.data.paymentAmount,
           accomodation: res.data?.data.accomodation,
           companyId: res.data?.data.company?.id,
+          file: res.data.data.file,
         });
       })
       .catch((err) => console.error(err));
@@ -175,7 +183,7 @@ const FormView = ({ selectedRole }) => {
         <div className="container-fluid">
           <div className="card card-default">
             <div className="card-header">
-              <h3 className="card-title">แก้ไข</h3>
+              <h3 className="card-title">รายละเอียด</h3>
               <div className="card-tools">
                 <button
                   type="button"
@@ -195,7 +203,7 @@ const FormView = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="รหัสนิสิต"
-                        // value={profile?.data?.username.slice(1)}
+                        value={formData.username.slice(1)}
                         disabled
                       />
                     </Form.Group>
@@ -221,7 +229,7 @@ const FormView = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="ชื่อ"
-                        // value={profile?.data?.firstName}
+                        value={formData.firstName}
                         disabled
                       />
                     </Form.Group>
@@ -230,7 +238,7 @@ const FormView = ({ selectedRole }) => {
                       <Form.Control
                         type="text"
                         placeholder="นามสกุล"
-                        // value={profile?.data?.lastName}
+                        value={formData.lastName}
                         disabled
                       />
                     </Form.Group>
@@ -242,6 +250,7 @@ const FormView = ({ selectedRole }) => {
                         placeholder="เบอร์โทรศัพท์"
                         defaultValue={formData.phone}
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -255,6 +264,7 @@ const FormView = ({ selectedRole }) => {
                         name="facebookName"
                         defaultValue={formData.facebookName}
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -268,6 +278,7 @@ const FormView = ({ selectedRole }) => {
                         defaultValue={formData.internshipPosition}
                         name="internshipPosition"
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -284,6 +295,7 @@ const FormView = ({ selectedRole }) => {
                         defaultValue={formData.requesterName}
                         name="requesterName"
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -300,6 +312,7 @@ const FormView = ({ selectedRole }) => {
                         defaultValue={formData.requesterPosition}
                         name="requesterPosition"
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -317,6 +330,7 @@ const FormView = ({ selectedRole }) => {
                           value="yes"
                           checked={formData.accomodation === "yes"}
                           onChange={handleChange}
+                          disabled
                         />
                         <Form.Check
                           type="radio"
@@ -326,6 +340,7 @@ const FormView = ({ selectedRole }) => {
                           value="no"
                           checked={formData.accomodation === "no"}
                           onChange={handleChange}
+                          disabled
                         />
                         <Form.Check
                           type="radio"
@@ -335,6 +350,7 @@ const FormView = ({ selectedRole }) => {
                           value="อื่นๆ"
                           checked={formData.accomodation === "อื่นๆ"}
                           onChange={handleChange}
+                          disabled
                         />
                       </div>
                     </Form.Group>
@@ -344,7 +360,7 @@ const FormView = ({ selectedRole }) => {
                         controlId="other_accommodation"
                       >
                         <Form.Label>กรณีอื่นๆ</Form.Label>
-                        <Form.Control type="text" placeholder="กรณีอื่นๆ" />
+                        <Form.Control type="text" placeholder="กรณีอื่นๆ" disabled/>
                       </Form.Group>
                     )}
                   </div>
@@ -360,6 +376,7 @@ const FormView = ({ selectedRole }) => {
                         name="companyId"
                         value={formData.companyId}
                         onChange={handleChange}
+                        disabled
                       >
                         {company.map((data) => (
                           <option key={data.id} value={data.id}>
@@ -379,6 +396,7 @@ const FormView = ({ selectedRole }) => {
                         name="coordinatorName"
                         defaultValue={formData.coordinatorName}
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -392,6 +410,7 @@ const FormView = ({ selectedRole }) => {
                         name="coordinatorPhone"
                         defaultValue={formData.coordinatorPhone}
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group
@@ -405,6 +424,7 @@ const FormView = ({ selectedRole }) => {
                         name="coordinatorEmail"
                         defaultValue={formData.coordinatorEmail}
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <div className="row">
@@ -419,6 +439,7 @@ const FormView = ({ selectedRole }) => {
                             defaultValue={formData.startDate}
                             name="startDate"
                             onChange={handleChange}
+                            disabled
                           />
                         </Form.Group>
                       </div>
@@ -433,6 +454,7 @@ const FormView = ({ selectedRole }) => {
                             defaultValue={formData.endDate}
                             name="endDate"
                             onChange={handleChange}
+                            disabled
                           />
                         </Form.Group>
                       </div>
@@ -451,9 +473,10 @@ const FormView = ({ selectedRole }) => {
                         name="paymentAmount"
                         defaultValue={formData.paymentAmount}
                         onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
-                    <Form.Group
+                    {/* <Form.Group
                       className="margin-top-12"
                       controlId="exampleInputFile"
                     >
@@ -471,7 +494,7 @@ const FormView = ({ selectedRole }) => {
                       >
                         ดาวน์โหลดไฟล์คำร้อง
                       </a>
-                    </Form.Group>
+                    </Form.Group> */}
                   </div>
                 </div>
                 <div
@@ -482,18 +505,6 @@ const FormView = ({ selectedRole }) => {
                     justifyContent: "end",
                   }}
                 >
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    style={{
-                      width: "10%",
-                      backgroundColor: "#03a96b",
-                      border: "none",
-                    }}
-                    // Disable the button while submitting
-                  >
-                    แก้ไข
-                  </button>
                   <button
                     type="button"
                     className="btn btn-secondary ml-1"
@@ -507,6 +518,27 @@ const FormView = ({ selectedRole }) => {
                   </button>
                 </div>
               </Form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="content">
+        <div className="container-fluid">
+          <div className="card card-default">
+            <div className="card-header">
+              <h3 className="card-title">เอกสาร</h3>
+              <div className="card-tools">
+                <button
+                  type="button"
+                  className="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i className="fas fa-minus" />
+                </button>
+              </div>
+            </div>
+            <div className="card-body">
+              <embed src={`data:application/pdf;base64,${formData.file.data}`} width="100%" height="750px"/>
             </div>
           </div>
         </div>
