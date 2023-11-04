@@ -77,7 +77,7 @@ function Login({ onLogin }) {
           />
           <div className="input-group-append">
             <div className="input-group-text">
-              <span className="fas fa-envelope" />
+              <span className="fas fa-user" />
             </div>
           </div>
         </div>

@@ -17,6 +17,8 @@ import UpdateForm from "./views/students/UpdateForm";
 import UpdateFormCompany from "./views/company/UpdateFormCompany";
 import NotFound from "./views/pageHandle/NotFound";
 import FormView from "./views/admin/FormView"
+import CheckDetail from "./views/students/CheckDetail";
+import CheckDetailCompany from "./views/company/CheckDetailCompany";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -202,6 +204,10 @@ function App() {
                 element={<UpdateForm selectedRole={authenticatedUser} />}
               />
               <Route
+                path="detail/:id"
+                element={<CheckDetail selectedRole={authenticatedUser} />}
+              />
+              <Route
                 path="*"
                 element={<NotFound />}
               />
@@ -223,6 +229,7 @@ function App() {
               <Route path="comregisters" element={<FormCompany />} />
               <Route path="companystatus" element={<CheckStatusCompany />} />
               <Route path="updateCom/:id" element={<UpdateFormCompany />} />
+              <Route path="detailCom/:id" element={<CheckDetailCompany />} />
               <Route
                 path="*"
                 element={<NotFound />}

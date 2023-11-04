@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
 let currentUser = new Set();
 let user = new Set();
-function UpdateFormCompany() {
+function CheckDetailCompany() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [collegians, setCollegians] = useState([]);
@@ -91,30 +91,7 @@ function UpdateFormCompany() {
     userIds: [],
   });
 
-  const handleSubmit = () => {
-    console.log(formData);
-    axios
-      .patch(
-        "http://localhost:3000/internship/company-request/" + id,
-        formData,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }
-      )
-      .then((res) => {
-        console.log("Form submitted successfully", res.data);
-        Swal.fire("ส่งคำร้องสำเร็จ", "", "success");
-        setTimeout(function () {
-          window.location.href = "/companystatus";
-        }, 1500);
-      })
-      .catch((err) => {
-        console.error("Form submission error", err);
-        Swal.fire("ไม่สำเร็จ", "โปรดตรวจสอบข้อมูล", "error");
-      });
-  };
+
   function formatDate(date) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -126,12 +103,7 @@ function UpdateFormCompany() {
 
     return [year, month, day].join("-");
   }
-  function handleChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  }
+  
   async function addNisit() {
     let option = {};
     for (let i = 0; i < collegians.length; i++) {
@@ -166,20 +138,7 @@ function UpdateFormCompany() {
       Swal.fire(`เพิ่มสำเร็จ`, "", "success");
     }
   }
-  function handleDelete(id) {
-    currentUser.forEach((point) => {
-      if (point.id === id) {
-        currentUser.delete(point);
-      }
-    });
-    user.delete(id);
-    setAddUser(Array.from(currentUser));
-    console.log(user);
-    setFormData({
-      ...formData,
-      userIds: Array.from(user),
-    });
-  }
+
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -241,7 +200,7 @@ function UpdateFormCompany() {
                         placeholder="ระบุชื่อของผู้ที่จะให้ภาควิชาฯออกหนังสือ ขอความอนุเคราะห์ฝึกงาน/สหกิจ"
                         name="requesterName"
                         defaultValue={formData.requesterName}
-                        onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group>
@@ -256,7 +215,7 @@ function UpdateFormCompany() {
                         ออกหนังสือขอความอนุเคราะห์ฝึกงาน/สหกิจ"
                         name="requesterPosition"
                         defaultValue={formData.requesterPosition}
-                        onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group className="margin-top-12">
@@ -276,7 +235,7 @@ function UpdateFormCompany() {
                         placeholder="ชื่อผู้ประสานงาน"
                         name="coordinatorName"
                         defaultValue={formData.coordinatorName}
-                        onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group className="margin-top-12">
@@ -287,7 +246,7 @@ function UpdateFormCompany() {
                         placeholder="โทร"
                         name="coordinatorPhone"
                         defaultValue={formData.coordinatorPhone}
-                        onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group className="margin-top-12">
@@ -298,7 +257,7 @@ function UpdateFormCompany() {
                         placeholder="E-mail"
                         name="coordinatorEmail"
                         defaultValue={formData.coordinatorEmail}
-                        onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                   </div>
@@ -312,7 +271,7 @@ function UpdateFormCompany() {
                             type="date"
                             name="startDate"
                             defaultValue={formData.startDate}
-                            onChange={handleChange}
+                            disabled
                           />
                         </Form.Group>
                       </div>
@@ -323,7 +282,7 @@ function UpdateFormCompany() {
                             type="date"
                             name="endDate"
                             defaultValue={formData.endDate}
-                            onChange={handleChange}
+                            disabled
                           />
                         </Form.Group>
                       </div>
@@ -339,7 +298,7 @@ function UpdateFormCompany() {
                         placeholder="จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ ไม่มีค่าตอบแทน)"
                         name="paymentAmount"
                         defaultValue={formData.paymentAmount}
-                        onChange={handleChange}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group style={{ marginTop: "22px" }}>
@@ -352,7 +311,7 @@ function UpdateFormCompany() {
                           name="accomodation"
                           value="yes"
                           checked={formData.accomodation === "yes"}
-                          onChange={handleChange}
+                          disabled
                         />
                         <Form.Check
                           type="radio"
@@ -361,7 +320,7 @@ function UpdateFormCompany() {
                           name="accomodation"
                           value="no"
                           checked={formData.accomodation === "no"}
-                          onChange={handleChange}
+                          disabled
                         />
                         <Form.Check
                           type="radio"
@@ -370,7 +329,7 @@ function UpdateFormCompany() {
                           name="accomodation"
                           value="อื่นๆ"
                           checked={formData.accomodation === "อื่นๆ"}
-                          onChange={handleChange}
+                          disabled
                         />
                       </div>
                     </Form.Group>
@@ -379,13 +338,6 @@ function UpdateFormCompany() {
                         ติดต่อสอบถามเพิ่มเติม
                       </a>
                     </div>
-                    <button
-                      className="btn btn-primary"
-                      type="button"
-                      onClick={addNisit}
-                    >
-                      เพิ่มรายชื่อนิสิตฝึกงาน
-                    </button>
                     <div className="card-body">
                       <table
                         id="myTable"
@@ -396,7 +348,6 @@ function UpdateFormCompany() {
                             <th>คำนำหน้า</th>
                             <th>ชื่อจริง</th>
                             <th>นามสุกล</th>
-                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -406,15 +357,6 @@ function UpdateFormCompany() {
                                 <td>{data.prefix}</td>
                                 <td>{data.firstName}</td>
                                 <td>{data.lastName}</td>
-                                <td>
-                                  <button
-                                    type="button"
-                                    className="text-decoration-none btn btn-sm btn-danger ml-1"
-                                    onClick={() => handleDelete(data.id)}
-                                  >
-                                    ลบ
-                                  </button>
-                                </td>
                               </tr>
                             );
                           })}
@@ -433,18 +375,6 @@ function UpdateFormCompany() {
                     backgroundColor: "white",
                   }}
                 >
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    style={{
-                      width: "10%",
-                      backgroundColor: "#03a96b",
-                      border: "none",
-                    }}
-                    onClick={handleSubmit}
-                  >
-                    แก้ไข
-                  </button>
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -469,4 +399,4 @@ function UpdateFormCompany() {
   );
 }
 
-export default UpdateFormCompany;
+export default CheckDetailCompany;

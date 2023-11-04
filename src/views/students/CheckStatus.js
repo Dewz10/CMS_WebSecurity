@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 import axios from "axios";
 
 function CheckStatus({ selectedRole }) {
-  const [modalShow, setModalShow] = React.useState(false);
   const [request, setRequest] = useState([]);
   useEffect(() => {
     getAllRequest()
@@ -160,6 +159,12 @@ function CheckStatus({ selectedRole }) {
                           >
                             ลบ
                           </button>
+                          <Link
+                            className={`text-decoration-none btn btn-sm btn-primary ml-1`}
+                            to={"/detail/" + data.id}
+                          >
+                            <i className="fas fa-eye"></i>
+                          </Link>
                         </td>
                       </tr>
                     );

@@ -165,6 +165,12 @@ function CheckStatusCompany() {
                           >
                             ลบ
                           </button>
+                          <Link
+                            className={`text-decoration-none btn btn-sm btn-primary ml-1`}
+                            to={"/detailCom/" + data.id}
+                          >
+                            <i className="fas fa-eye"></i>
+                          </Link>
                         </td>
                       </tr>
                     );
