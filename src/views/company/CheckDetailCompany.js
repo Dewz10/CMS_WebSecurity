@@ -225,6 +225,7 @@ function CheckDetailCompany() {
                         id="company_name"
                         placeholder="ชื่อผู้ประสานงาน"
                         value={profile?.data?.firstName}
+                        disabled
                       />
                     </Form.Group>
                     <Form.Group className="margin-top-12">

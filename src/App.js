@@ -257,6 +257,10 @@ function App() {
                 element={<FormView selectedRole={authenticatedUser} />}
               />
               <Route
+                path="viewcompanies/:id"
+                element={<CheckDetailCompany/>}
+              />
+              <Route
                 path="*"
                 element={<NotFound />}
               />
