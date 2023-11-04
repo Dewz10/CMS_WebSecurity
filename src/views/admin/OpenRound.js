@@ -62,6 +62,25 @@ function OpenRound() {
       name: "Application Status",
       selector: "applicationStatus",
       sortable: true,
+      cell: (row) => {
+        let badgeClass = "";
+        switch (row.applicationStatus) {
+          case "Open":
+            badgeClass = "badge bg-success";
+            break;
+          case "Close":
+            badgeClass = "badge bg-danger";
+            break;
+          case "Considering":
+            badgeClass = "badge bg-warning";
+            break;
+          default:
+            badgeClass = "badge bg-secondary";
+            break;
+        }
+  
+        return <span className={`badge ${badgeClass}`} style={{fontSize: "12px"}}>{row.applicationStatus}</span>;
+      },
     },
     {
       name: "Actions",
