@@ -143,7 +143,7 @@ const CheckDetail = ( {selectedRole}) => {
           <div className="container-fluid">
             <div className="card card-default">
               <div className="card-header">
-                <h3 className="card-title">แก้ไข</h3>
+                <h3 className="card-title">รายละเอียด</h3>
                 <div className="card-tools">
                   <button
                     type="button"
