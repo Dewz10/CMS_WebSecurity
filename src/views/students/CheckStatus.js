@@ -43,7 +43,7 @@ function CheckStatus({ selectedRole }) {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete("http://localhost:3000/internship/request/" + id, {
+          .delete("https://localhost:3000/internship/request/" + id, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
             },

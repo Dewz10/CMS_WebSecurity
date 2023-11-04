@@ -218,7 +218,7 @@ function ManageRequest() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/application", {
+      .get("https://localhost:3000/internship/application", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -241,11 +241,11 @@ function ManageRequest() {
     let urlCompany;
   
     if (selectedAppId === 0) {
-      url = "http://localhost:3000/internship/request";
-      urlCompany = "http://localhost:3000/internship/company-request";
+      url = "https://localhost:3000/internship/request";
+      urlCompany = "https://localhost:3000/internship/company-request";
     } else {
-      url = `http://localhost:3000/internship/request/application-round/${selectedAppId}`;
-      urlCompany = `http://localhost:3000/internship/company-request/${selectedAppId}`;
+      url = `https://localhost:3000/internship/request/application-round/${selectedAppId}`;
+      urlCompany = `https://localhost:3000/internship/company-request/${selectedAppId}`;
     }
   
     const axiosConfig = {
@@ -316,7 +316,7 @@ function ManageRequest() {
       if (result.isConfirmed) {
         axios
           .patch(
-            `http://localhost:3000/internship/request/${requestId}`,
+            `https://localhost:3000/internship/request/${requestId}`,
             requestData,
             {
               headers: {
@@ -357,7 +357,7 @@ function ManageRequest() {
       if (result.isConfirmed) {
         axios
           .patch(
-            `http://localhost:3000/internship/company-request/${requestId}`,
+            `https://localhost:3000/internship/company-request/${requestId}`,
             requestData,
             {
               headers: {

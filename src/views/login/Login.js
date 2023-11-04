@@ -18,7 +18,7 @@ function Login({ onLogin }) {
   }
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", {
+      const response = await axios.post("https://localhost:3000/auth/login", {
         username,
         password,
       });
@@ -59,7 +59,7 @@ function Login({ onLogin }) {
       }
     } catch (error) {
       //console.log(error.response.status)
-      if(error.response.status === 400) {
+      if(error?.response?.status === 400) {
         const date = new Date()
         const suspendDate = new Date(error.response.data.message.time)
         let millis = suspendDate.getTime() - date.getTime()

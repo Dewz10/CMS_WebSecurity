@@ -53,7 +53,7 @@ const FormView = ({ selectedRole }) => {
   });
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/request/" + id, {
+      .get("https://localhost:3000/internship/request/" + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -102,7 +102,7 @@ const FormView = ({ selectedRole }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .patch("http://localhost:3000/internship/request/" + id, formData, {
+          .patch("https://localhost:3000/internship/request/" + id, formData, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
             },

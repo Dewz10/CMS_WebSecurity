@@ -7,7 +7,7 @@ function News() {
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/application", {
+      .get("https://localhost:3000/internship/application", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },

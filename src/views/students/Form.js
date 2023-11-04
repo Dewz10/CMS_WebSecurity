@@ -24,7 +24,7 @@ function MyForm({ selectedRole }) {
   const [profile, setProfile] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/profile", {
+      .get("https://localhost:3000/auth/profile", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -56,7 +56,7 @@ function MyForm({ selectedRole }) {
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/application", {
+      .get("https://localhost:3000/internship/application", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -114,7 +114,7 @@ function MyForm({ selectedRole }) {
     };
 
     axios
-      .post("http://localhost:3000/internship/request", requestData, {
+      .post("https://localhost:3000/internship/request", requestData, {
         headers,
       })
       .then((res) => {

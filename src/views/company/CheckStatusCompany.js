@@ -9,7 +9,7 @@ function CheckStatusCompany() {
   const [companyRequest, setCompanyRequest] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/company-request/company", {
+      .get("https://localhost:3000/internship/company-request/company", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -40,7 +40,7 @@ function CheckStatusCompany() {
       confirmButtonText: "ยืนยัน",
     }).then((result) => {
       axios
-          .delete("http://localhost:3000/internship/company-request/" + companyId, {
+          .delete("https://localhost:3000/internship/company-request/" + companyId, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
             },

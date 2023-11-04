@@ -12,7 +12,7 @@ function CheckDetailCompany() {
   const [collegians, setCollegians] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/users/collegians", {
+      .get("https://localhost:3000/users/collegians", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -25,7 +25,7 @@ function CheckDetailCompany() {
   const [profile, setProfile] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/profile", {
+      .get("https://localhost:3000/auth/profile", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -35,7 +35,7 @@ function CheckDetailCompany() {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/company-request/" + id, {
+      .get("https://localhost:3000/internship/company-request/" + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -61,7 +61,7 @@ function CheckDetailCompany() {
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/application", {
+      .get("https://localhost:3000/internship/application", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -335,7 +335,7 @@ function CheckDetailCompany() {
                       </div>
                     </Form.Group>
                     <div className="form-group">
-                      <a href="https://www.facebook.com/cpe.eng.kps/?locale=th_TH">
+                      <a href="httpss://www.facebook.com/cpe.eng.kps/?locale=th_TH">
                         ติดต่อสอบถามเพิ่มเติม
                       </a>
                     </div>

@@ -23,7 +23,7 @@ const UpdateForm = ({ selectedRole }) => {
   const [profile, setProfile] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/profile", {
+      .get("https://localhost:3000/auth/profile", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -69,7 +69,7 @@ const UpdateForm = ({ selectedRole }) => {
   });
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/request/" + id, {
+      .get("https://localhost:3000/internship/request/" + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -101,7 +101,7 @@ const UpdateForm = ({ selectedRole }) => {
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/application", {
+      .get("https://localhost:3000/internship/application", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -127,7 +127,7 @@ const UpdateForm = ({ selectedRole }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .patch("http://localhost:3000/internship/request/" + id, formData, {
+          .patch("https://localhost:3000/internship/request/" + id, formData, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
               "Content-Type": "multipart/form-data",

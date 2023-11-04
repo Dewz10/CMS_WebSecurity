@@ -56,7 +56,7 @@ function App() {
         }
 
         const response = await axios.post(
-          "http://localhost:3000/auth/refresh-tokens",
+          "https://localhost:3000/auth/refresh-tokens",
           {
             method: "POST",
             headers: {
@@ -106,7 +106,7 @@ function App() {
         Authorization: `Bearer ${access_token}`,
       };
 
-      const response = await axios.get("http://localhost:3000/auth/profile", {
+      const response = await axios.get("https://localhost:3000/auth/profile", {
         headers,
       });
 

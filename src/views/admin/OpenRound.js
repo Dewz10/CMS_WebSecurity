@@ -99,7 +99,7 @@ function OpenRound() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/application", {
+      .get("https://localhost:3000/internship/application", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -123,7 +123,7 @@ function OpenRound() {
       console.log(idEdit)
       axios
         .patch(
-          `http://localhost:3000/internship/application/`+idEdit,
+          `https://localhost:3000/internship/application/`+idEdit,
           formData,
           {
             headers: {
@@ -143,7 +143,7 @@ function OpenRound() {
         });
     } else {
       axios
-        .post("http://localhost:3000/internship/application", formData, {
+        .post("https://localhost:3000/internship/application", formData, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
@@ -212,7 +212,7 @@ function OpenRound() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:3000/internship/application/${row.id}`, {
+          .delete(`https://localhost:3000/internship/application/${row.id}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
             },

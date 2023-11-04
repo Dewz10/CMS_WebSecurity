@@ -23,7 +23,7 @@ const CheckDetail = ( {selectedRole}) => {
     const [profile, setProfile] = useState([]);
     useEffect(() => {
       axios
-        .get("http://localhost:3000/auth/profile", {
+        .get("https://localhost:3000/auth/profile", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
@@ -64,7 +64,7 @@ const CheckDetail = ( {selectedRole}) => {
     });
     useEffect(() => {
       axios
-        .get("http://localhost:3000/internship/request/" + id, {
+        .get("https://localhost:3000/internship/request/" + id, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
@@ -96,7 +96,7 @@ const CheckDetail = ( {selectedRole}) => {
     const [rounds, setRounds] = useState([]);
     useEffect(() => {
       axios
-        .get("http://localhost:3000/internship/application", {
+        .get("https://localhost:3000/internship/application", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },

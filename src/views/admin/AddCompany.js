@@ -74,7 +74,7 @@ function AddCompany() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/company", {
+      .get("https://localhost:3000/internship/company", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token")
         }
@@ -97,7 +97,7 @@ function AddCompany() {
     if (editMode) {
       axios
         .patch(
-          `http://localhost:3000/internship/company/` + idEdit,
+          `https://localhost:3000/internship/company/` + idEdit,
           formData,
           {
             headers: {
@@ -117,7 +117,7 @@ function AddCompany() {
         });
     } else {
       axios
-        .post("http://localhost:3000/internship/company", formData, {
+        .post("https://localhost:3000/internship/company", formData, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token")
           }
@@ -176,7 +176,7 @@ function AddCompany() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:3000/internship/company/` + row.id, {
+          .delete(`https://localhost:3000/internship/company/` + row.id, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token")
             }
