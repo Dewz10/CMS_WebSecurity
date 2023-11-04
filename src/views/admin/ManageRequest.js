@@ -44,6 +44,11 @@ function ManageRequest() {
       sortable: true,
     },
     {
+      name: "Application Round",
+      selector: (row) => row.applicationRound.name,
+      sortable: true,
+    },
+    {
       name: "Request Status",
       selector: (row) => row.requestStatus,
       sortable: true,
@@ -69,6 +74,7 @@ function ManageRequest() {
           <span className={`badge ${badgeClass}`} style={{fontSize: "14px"}}>{row.requestStatus}</span>
         );
       },
+      minWidth: "190px",
     },
     {
       name: "Actions",
@@ -92,6 +98,7 @@ function ManageRequest() {
           </Link>
         </div>
       ),
+      minWidth: "190px",
     },
   ];
 
