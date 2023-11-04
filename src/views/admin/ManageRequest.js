@@ -7,12 +7,18 @@ import { Link } from "react-router-dom";
 
 function ManageRequest() {
   const [data, setData] = useState([]);
+  const [dataCompany, setDataCompany] = useState([]);
   const [requestStatus, setRequestStatus] = useState("");
   const [requestId, setRequestId] = useState(0);
   const [applications, setApplications] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(0);
 
   const columns = [
+    {
+      name: "Company",
+      selector: (row) => row.company.name,
+      sortable: true,
+    },
     {
       name: "ID",
       selector: (row) => row.user.username,
@@ -41,6 +47,28 @@ function ManageRequest() {
       name: "Request Status",
       selector: (row) => row.requestStatus,
       sortable: true,
+      cell: (row) => {
+        let badgeClass = "";
+  
+        switch (row.requestStatus) {
+          case "Pass":
+            badgeClass = "badge bg-success";
+            break;
+          case "Not pass":
+            badgeClass = "badge bg-danger";
+            break;
+          case "Waiting to consider":
+            badgeClass = "badge bg-warning";
+            break;
+          default:
+            badgeClass = "badge bg-secondary";
+            break;
+        }
+  
+        return (
+          <span className={`badge ${badgeClass}`} style={{fontSize: "12px"}}>{row.requestStatus}</span>
+        );
+      },
     },
     {
       name: "Actions",
@@ -69,51 +97,115 @@ function ManageRequest() {
 
   const columnCompany = [
     {
-      name: "Company Name",
-      // selector: (row) => row.user.username,
+      name: "Company",
+      selector: (row) => row.user.firstName,
       sortable: true,
+      minWidth: "150px",
+    },
+    // {
+    //   name: "Requester Name",
+    //   selector: (row) => row.requesterName,
+    //   sortable: true,
+    //   minWidth: "150px",
+    // },
+    // {
+    //   name: "Position",
+    //   selector: (row) => row.requesterPosition,
+    //   sortable: true,
+    //   minWidth: "150px",
+    // },
+    {
+      name: "Coordinator Name",
+      selector: (row) => row.coordinatorName,
+      sortable: true,
+      minWidth: "120px",
     },
     {
-      name: "Requester",
-      // selector: (row) => row.user.firstName + " " + row.user.lastName,
+      name: "Phone",
+      selector: (row) => row.coordinatorPhone,
       sortable: true,
+      minWidth: "50px",
     },
     {
-      name: "Request Date",
-      // selector: (row) => row.requestDate,
+      name: "Email",
+      selector: (row) => row.coordinatorEmail,
       sortable: true,
-      // cell: (row) => {
-      //   const date = new Date(row.requestDate);
-      //   return date.toLocaleDateString("th-TH");
-      // },
+      minWidth: "150px",
+    },
+    // {
+    //   name: "Start Date",
+    //   selector: (row) => {
+    //     const date = new Date(row.startDate);
+    //     return date.toLocaleDateString("th-TH");
+    //   },
+    //   sortable: true,
+    //   minWidth: "150px",
+    // },
+    // {
+    //   name: "End Date",
+    //   selector: (row) => {
+    //     const date = new Date(row.endDate);
+    //     return date.toLocaleDateString("th-TH");
+    //   },
+    //   sortable: true,
+    //   minWidth: "150px",
+    // },
+    {
+      name: "Application Round",
+      selector: (row) => row.applicationRound.name,
+      sortable: true,
+      minWidth: "150px",
     },
     {
       name: "Request Status",
-      // selector: (row) => row.requestStatus,
+      selector: (row) => row.requestStatus,
       sortable: true,
+      cell: (row) => {
+        let badgeClass = "";
+  
+        switch (row.requestStatus) {
+          case "Pass":
+            badgeClass = "badge bg-success";
+            break;
+          case "Not pass":
+            badgeClass = "badge bg-danger";
+            break;
+          case "Waiting to consider":
+            badgeClass = "badge bg-warning";
+            break;
+          default:
+            badgeClass = "badge bg-secondary";
+            break;
+        }
+  
+        return (
+          <span className={`badge ${badgeClass}`} style={{fontSize: "12px"}}>{row.requestStatus}</span>
+        );
+      },
     },
     {
       name: "Actions",
-      // cell: (row) => (
-      //   <div>
-      //     {row.requestStatus === "Waiting to consider" && (
-      //       <Button variant="success" onClick={() => handleAccept(row)}>
-      //         <i className="fas fa-check"></i>
-      //       </Button>
-      //     )}{" "}
-      //     {row.requestStatus === "Waiting to consider" && (
-      //       <Button variant="danger" onClick={() => handleReject(row)}>
-      //         <i className="fas fa-times"></i>
-      //       </Button>
-      //     )}{" "}
-      //     <Link
-      //       className="text-decoration-none btn btn-primary"
-      //       to={"/view/" + row.id}
-      //     >
-      //       <i className="fas fa-eye"></i>
-      //     </Link>
-      //   </div>
-      // ),
+      minWidth: "190px",
+      cell: (row) => (
+        <div>
+          {row.requestStatus === "Waiting to consider" && (
+            <Button variant="success" onClick={() => handleAcceptCompany(row)}>
+              <i className="fas fa-check"></i>
+            </Button>
+          )}{" "}
+          {row.requestStatus === "Waiting to consider" && (
+            <Button variant="danger" onClick={() => handleRejectCompany(row)}>
+              <i className="fas fa-times"></i>
+            </Button>
+          )}{" "}
+          <Link
+            className="text-decoration-none btn btn-primary"
+            to={"/view/" + row.id}
+          >
+            <i className="fas fa-eye"></i>
+          </Link>
+        </div>
+      ),
     },
   ];
 
@@ -139,26 +231,41 @@ function ManageRequest() {
   const fetchData = (selectedAppId) => {
     console.log(selectedAppId);
     let url;
-
+    let urlCompany;
+  
     if (selectedAppId === 0) {
       url = "http://localhost:3000/internship/request";
+      urlCompany = "http://localhost:3000/internship/company-request";
     } else {
       url = `http://localhost:3000/internship/request/application-round/${selectedAppId}`;
+      urlCompany = `http://localhost:3000/internship/company-request/${selectedAppId}`;
     }
-
+  
+    const axiosConfig = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    };
+  
     axios
-      .get(url, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      })
+      .get(url, axiosConfig)
       .then((response) => {
         setData(response.data.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  
+    axios
+      .get(urlCompany, axiosConfig)
+      .then((response) => {
+        setDataCompany(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
+  
 
   const handleApplicationChange = (e) => {
     setSelectedApplication(e.target.value);
@@ -170,6 +277,14 @@ function ManageRequest() {
 
   const handleReject = (row) => {
     updateRequestStatus(row.id, "Not pass");
+  };
+
+  const handleAcceptCompany = (row) => {
+    updateRequestStatusCompany(row.id, "Pass");
+  };
+
+  const handleRejectCompany = (row) => {
+    updateRequestStatusCompany(row.id, "Not pass");
   };
 
   const handleReload = () => {
@@ -195,6 +310,47 @@ function ManageRequest() {
         axios
           .patch(
             `http://localhost:3000/internship/request/${requestId}`,
+            requestData,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
+            }
+          )
+          .then((response) => {
+            Swal.fire("สำเร็จ!", "ปรับเปลี่ยนสถานะสำเร็จ", "success").then(
+              () => {
+                fetchData(selectedApplication);
+              }
+            );
+          })
+          .catch((error) => {
+            Swal.fire("ข้อผิดพลาด!", "ไม่สามารถปรับเปลี่ยนสถานะ", "error");
+            console.error("Error updating request status:", error);
+          });
+      }
+    });
+  };
+
+  const updateRequestStatusCompany = (requestId, status) => {
+    const requestData = {
+      requestStatus: status,
+    };
+
+    Swal.fire({
+      title: "ยืนยันการดำเนินการ",
+      text: `คุณต้องการปรับเปลี่ยนสถานะเป็น "${status}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .patch(
+            `http://localhost:3000/internship/company-request/${requestId}`,
             requestData,
             {
               headers: {
@@ -311,7 +467,7 @@ function ManageRequest() {
                 // title="จัดการคำร้องบริษัท"
                 pagination
                 columns={columnCompany}
-                data={data}
+                data={dataCompany}
               />
             </div>
           </div>
