@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 
 function CheckStatusCompany() {
-  const [modalShow, setModalShow] = React.useState(false);
   const [companyRequest, setCompanyRequest] = useState([]);
   useEffect(() => {
     axios
@@ -30,7 +29,7 @@ function CheckStatusCompany() {
     return [year, month, day].join("-");
   }
   function showNisit() {}
-  function handleDelete() {
+  function handleDelete(companyId) {
     Swal.fire({
       title: "ยืนยันที่จะลบ?",
       text: "หากทำแล้วจะไม่สามารถย้อนกลับมาได้อีก",
@@ -40,16 +39,31 @@ function CheckStatusCompany() {
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
     }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          "ข้อมูลถูกลบเรียบร้อย",
-          "คำร้องของคุณถูกลบเรียบร้อย",
-          "success"
-        );
-      }
+      axios
+          .delete("http://localhost:3000/internship/company-request/" + companyId, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          })
+          .then((res) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "ลบข้อมูลสำเร็จ",
+                "ข้อมูลของคุณถูกลบเรียบร้อย",
+                "success"
+              );
+            }
+            setTimeout(function () {
+              window.location.reload();
+            }, 1500);
+          })
+          .catch((err) => {
+            if (result.isConfirmed) {
+              Swal.fire("ลบข้อมูลไม่สำเร็จ", "", "error");
+            }
+          });
     });
   }
-  function TableModal() {}
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -147,7 +161,7 @@ function CheckStatusCompany() {
                           </Link>
                           <button
                             className="text-decoration-none btn btn-sm btn-danger ml-1"
-                            onClick={handleDelete}
+                            onClick={()=>{handleDelete(data.id)}}
                           >
                             ลบ
                           </button>

@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-
-let user = new Set();
+import { useNavigate, useParams } from "react-router-dom";
 let currentUser = new Set();
-let User = [];
-
+let user = new Set();
 function UpdateFormCompany() {
-const navigate = useNavigate()
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [collegians, setCollegians] = useState([]);
   useEffect(() => {
     axios
@@ -19,7 +17,9 @@ const navigate = useNavigate()
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       })
-      .then((res) => setCollegians(res.data.data))
+      .then((res) => {
+        setCollegians(res.data.data);
+      })
       .catch((err) => console.error(err));
   }, []);
   const [profile, setProfile] = useState([]);
@@ -33,18 +33,31 @@ const navigate = useNavigate()
       .then((res) => setProfile(res.data))
       .catch((err) => console.error(err));
   }, []);
-  const [companyRequest, setCompanyRequest] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3000/internship/company-request/company", {
+      .get("http://localhost:3000/internship/company-request/" + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       })
-      .then((res) => console.log(res.data.data))
+      .then((res) => {
+        setFormData({
+          ...formData,
+          requesterName: res.data?.data.requesterName,
+          requesterPosition: res.data?.data.requesterPosition,
+          coordinatorName: res.data?.data.coordinatorName,
+          coordinatorPhone: res.data?.data.coordinatorPhone,
+          coordinatorEmail: res.data?.data.coordinatorEmail,
+          startDate: formatDate(res.data?.data.startDate),
+          endDate: formatDate(res.data?.data.endDate),
+          paymentAmount: res.data?.data.paymentAmount,
+          accomodation: res.data?.data.accomodation,
+          applicationRoundId: res.data?.data.applicationRound.id,
+        });
+        setAddUser(res.data.data.collegians);
+      })
       .catch((err) => console.error(err));
   }, []);
-  const [applicationId, setApplicationId] = useState();
   const [rounds, setRounds] = useState([]);
   useEffect(() => {
     axios
@@ -59,6 +72,11 @@ const navigate = useNavigate()
   const [round, setRound] = useState();
   useEffect(() => setRound(rounds[rounds.length - 1]));
   const [addUser, setAddUser] = useState([]);
+  useEffect(()=>{
+    addUser.forEach((point)=>{
+      currentUser.add(point)
+    })
+  },[])
   const [formData, setFormData] = useState({
     requesterName: "",
     requesterPosition: "",
@@ -76,7 +94,7 @@ const navigate = useNavigate()
   const handleSubmit = () => {
     console.log(formData);
     axios
-      .post("http://localhost:3000/internship/company-request", formData, {
+      .patch("http://localhost:3000/internship/company-request/"+id, formData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -84,20 +102,32 @@ const navigate = useNavigate()
       .then((res) => {
         console.log("Form submitted successfully", res.data);
         Swal.fire("ส่งคำร้องสำเร็จ", "", "success");
-        setTimeout(function () {}, 1500);
+        setTimeout(function () {
+          window.location.href = "/companystatus";
+        }, 1500);
       })
       .catch((err) => {
         console.error("Form submission error", err);
         Swal.fire("ไม่สำเร็จ", "โปรดตรวจสอบข้อมูล", "error");
       });
   };
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
   function handleChange(e) {
     setFormData({
       ...formData,
-      applicationRoundId: round.id,
       [e.target.name]: e.target.value,
     });
+
   }
   async function addNisit() {
     let option = {};
@@ -174,7 +204,7 @@ const navigate = useNavigate()
           {/* SELECT2 EXAMPLE */}
           <div className="card card-default">
             <div className="card-header">
-              <h3 className="card-title">ลงทะเบียน</h3>
+              <h3 className="card-title">แก้ไข</h3>
               <div className="card-tools">
                 <button
                   type="button"
@@ -207,6 +237,7 @@ const navigate = useNavigate()
                         id="requester_name"
                         placeholder="ระบุชื่อของผู้ที่จะให้ภาควิชาฯออกหนังสือ ขอความอนุเคราะห์ฝึกงาน/สหกิจ"
                         name="requesterName"
+                        defaultValue={formData.requesterName}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -221,6 +252,7 @@ const navigate = useNavigate()
                         placeholder="ระบุตำแหน่งของผู้ที่จะให้ภาควิชาฯ 
                         ออกหนังสือขอความอนุเคราะห์ฝึกงาน/สหกิจ"
                         name="requesterPosition"
+                        defaultValue={formData.requesterPosition}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -240,6 +272,7 @@ const navigate = useNavigate()
                         id="coordinator_name"
                         placeholder="ชื่อผู้ประสานงาน"
                         name="coordinatorName"
+                        defaultValue={formData.coordinatorName}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -250,6 +283,7 @@ const navigate = useNavigate()
                         id="coordinator_phone"
                         placeholder="โทร"
                         name="coordinatorPhone"
+                        defaultValue={formData.coordinatorPhone}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -260,6 +294,7 @@ const navigate = useNavigate()
                         id="coordinator_email"
                         placeholder="E-mail"
                         name="coordinatorEmail"
+                        defaultValue={formData.coordinatorEmail}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -273,6 +308,7 @@ const navigate = useNavigate()
                           <Form.Control
                             type="date"
                             name="startDate"
+                            defaultValue={formData.startDate}
                             onChange={handleChange}
                           />
                         </Form.Group>
@@ -283,12 +319,13 @@ const navigate = useNavigate()
                           <Form.Control
                             type="date"
                             name="endDate"
+                            defaultValue={formData.endDate}
                             onChange={handleChange}
                           />
                         </Form.Group>
                       </div>
                     </div>
-                    <Form.Group style={{marginTop: "16px"}}>
+                    <Form.Group style={{ marginTop: "16px" }}>
                       <Form.Label>
                         จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ
                         ไม่มีค่าตอบแทน)
@@ -298,10 +335,11 @@ const navigate = useNavigate()
                         id="payment_amount"
                         placeholder="จำนวนค่าตอบแทน (บาท/วัน หรือ บาท/เดือน) (หรือ ไม่มีค่าตอบแทน)"
                         name="paymentAmount"
+                        defaultValue={formData.paymentAmount}
                         onChange={handleChange}
                       />
                     </Form.Group>
-                    <Form.Group style={{marginTop: "22px"}}>
+                    <Form.Group style={{ marginTop: "22px" }}>
                       <Form.Label>ที่พัก</Form.Label>
                       <div className="form-check form-check-inline">
                         <Form.Check
@@ -310,6 +348,7 @@ const navigate = useNavigate()
                           label="มี"
                           name="accomodation"
                           value="yes"
+                          checked={formData.accomodation === "yes"}
                           onChange={handleChange}
                         />
                         <Form.Check
@@ -318,6 +357,7 @@ const navigate = useNavigate()
                           label="ไม่มี"
                           name="accomodation"
                           value="no"
+                          checked={formData.accomodation === "no"}
                           onChange={handleChange}
                         />
                         <Form.Check
@@ -326,6 +366,7 @@ const navigate = useNavigate()
                           label="อื่นๆ"
                           name="accomodation"
                           value="อื่นๆ"
+                          checked={formData.accomodation === "อื่นๆ"}
                           onChange={handleChange}
                         />
                       </div>
@@ -411,7 +452,7 @@ const navigate = useNavigate()
                     }}
                     onClick={handleSubmit}
                   >
-                    ส่งคำร้อง
+                    แก้ไข
                   </button>
                 </div>
               </Form>
