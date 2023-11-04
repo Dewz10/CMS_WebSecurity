@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:3000/internship'
+const API_BASE_URL = 'https://localhost:3000/internship'
 //const token = localStorage.getItem('access_token')
 
 
