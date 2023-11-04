@@ -45,10 +45,24 @@ function News() {
       <br></br>
       <div className="content">
         <CheckStatus status={round?.applicationStatus} round={round}/>
+        <FormatDate considerationDate={round?.considerationDate}/>
         <Count deadline={round?.considerationDate}/>
       </div>
     </div>
   );
+}
+function FormatDate(props){
+  const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+  let d = props.considerationDate
+  const date = new Date(d)
+  const day = date.getDate()
+  const month = months[date.getMonth()]
+  const year = date.getFullYear()
+  return(
+    <div>
+      วันที่พิจารณา {day} {month} {year}
+    </div>
+  )
 }
 
 function CheckStatus(props){

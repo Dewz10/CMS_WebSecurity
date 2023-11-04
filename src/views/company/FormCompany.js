@@ -395,6 +395,11 @@ function FormCompany() {
                       backgroundColor: "#03a96b",
                       border: "none",
                     }}
+                    disabled={
+                      round === null ||
+                      round?.applicationStatus === "Close" ||
+                      round?.applicationStatus === "Considering"
+                    }
                     onClick={handleSubmit}
                   >
                     ส่งคำร้อง

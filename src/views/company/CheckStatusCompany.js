@@ -110,6 +110,10 @@ function CheckStatusCompany() {
                   {Array.from(companyRequest).map((data, i) => {
                     let cn;
                     let message;
+                    let isNotWaiting =
+                      !data.requestStatus.localeCompare("Pass") ||
+                      !data.requestStatus.localeCompare("Not pass");
+
                     if (!data.requestStatus.localeCompare("Pass")) {
                       cn = "badge bg-success";
                       message = "ผ่านการพิจารณา";
@@ -154,14 +158,18 @@ function CheckStatusCompany() {
                         </td>
                         <td>
                           <Link
-                            className="text-decoration-none btn btn-sm btn-warning"
+                            className={`text-decoration-none btn btn-sm btn-warning ${
+                              isNotWaiting ? "disabled" : ""
+                            }`}
                             to={"/updateCom/" + data.id}
+  
                           >
                             แก้ไข
                           </Link>
                           <button
                             className="text-decoration-none btn btn-sm btn-danger ml-1"
                             onClick={()=>{handleDelete(data.id)}}
+                            disabled={isNotWaiting}
                           >
                             ลบ
                           </button>

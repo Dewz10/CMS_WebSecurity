@@ -10,6 +10,7 @@ function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [isDisable,setIsDisable] = useState(false)
   
   const handleLogin = async () => {
     try {
@@ -17,6 +18,7 @@ function Login({ onLogin }) {
         username,
         password,
       });
+      console.log(response.status)
 
       if (response.status === 200) {
         const data = response.data;
@@ -33,27 +35,64 @@ function Login({ onLogin }) {
         } else {
           console.error("Access token not received.");
         }
-      } else {
-        console.error("Authentication failed.");
+      }else if(response.status === 400) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'error',
+          title: response.data.message
+        })
       }
     } catch (error) {
+      //console.log(error.response.status)
+      if(error.response.status === 400) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'error',
+          title: error.response.data.message
+        })
+      }
+      else {
+        console.error("Authentication failed.");
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'error',
+          title: 'Invalid username or password'
+        })
+      }
       console.error("An error occurred.", error);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
-      
-      Toast.fire({
-        icon: 'error',
-        title: 'Invalid username or password'
-      })
     }
   };
 
