@@ -3,8 +3,8 @@ import "./login.css";
 import kuLogo from "../../assets/ku-logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import CryptoJS from 'crypto-js'
 import Swal from "sweetalert2";
+const AES = require('../../services/encrypt_decrypt')
 
 function Login({ onLogin }) {
   const [username, setUsername] = useState("");

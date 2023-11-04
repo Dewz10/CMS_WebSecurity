@@ -64,7 +64,7 @@ const CheckDetail = ( {selectedRole}) => {
     });
     useEffect(() => {
       axios
-        .get("https://localhost:3000/internship/request/" + id, {
+        .get("https://localhost:3000/internship/request/" + atob(id), {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },

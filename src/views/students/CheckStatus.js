@@ -145,7 +145,7 @@ function CheckStatus({ selectedRole }) {
                             className={`text-decoration-none btn btn-sm btn-warning ${
                               isNotWaiting ? "disabled" : ""
                             }`}
-                            to={"/update/" + data.id}
+                            to={"/update/" + btoa(data.id)}
                             disabled={isNotWaiting}
                           >
                             แก้ไข
@@ -161,7 +161,7 @@ function CheckStatus({ selectedRole }) {
                           </button>
                           <Link
                             className={`text-decoration-none btn btn-sm btn-primary ml-1`}
-                            to={"/detail/" + data.id}
+                            to={"/detail/" + btoa(data.id)}
                           >
                             <i className="fas fa-eye"></i>
                           </Link>

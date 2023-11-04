@@ -35,7 +35,7 @@ function CheckDetailCompany() {
   }, []);
   useEffect(() => {
     axios
-      .get("https://localhost:3000/internship/company-request/" + id, {
+      .get("https://localhost:3000/internship/company-request/" + atob(id), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },

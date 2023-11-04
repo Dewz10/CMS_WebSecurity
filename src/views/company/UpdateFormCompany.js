@@ -35,7 +35,7 @@ function UpdateFormCompany() {
   }, []);
   useEffect(() => {
     axios
-      .get("https://localhost:3000/internship/company-request/" + id, {
+      .get("https://localhost:3000/internship/company-request/" + atob(id), {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -95,7 +95,7 @@ function UpdateFormCompany() {
     console.log(formData);
     axios
       .patch(
-        "https://localhost:3000/internship/company-request/" + id,
+        "https://localhost:3000/internship/company-request/" + atob(id),
         formData,
         {
           headers: {

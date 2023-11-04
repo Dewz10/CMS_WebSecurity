@@ -92,7 +92,7 @@ function ManageRequest() {
           )}{" "}
           <Link
             className="text-decoration-none btn btn-primary"
-            to={"/view/" + row.id}
+            to={"/view/" + btoa(row.id)}
           >
             <i className="fas fa-eye"></i>
           </Link>
@@ -207,7 +207,7 @@ function ManageRequest() {
           )}{" "}
           <Link
             className="text-decoration-none btn btn-primary"
-            to={"/viewcompanies/" + row.id}
+            to={"/viewcompanies/" + btoa(row.id)}
           >
             <i className="fas fa-eye"></i>
           </Link>
