@@ -6,10 +6,10 @@ const getMinutes = (time) => Math.floor((time / 1000 / 60) % 60);
 const getSeconds = (time) => Math.floor((time / 1000) % 60);
 
 const timeSuffix = {
-  0: "days",
-  1: "hours",
-  2: "minutes",
-  3: "seconds"
+  0: "วัน",
+  1: "ชั่วโมง",
+  2: "นาที",
+  3: "วินาที"
 };
 
 const Clock = ({ deadline }) => {
@@ -48,14 +48,15 @@ const Clock = ({ deadline }) => {
   }, [deadline, getTimeUntil]);
 
   return (
-    <div className="Clock-container">
+    <div className="Clock-container" style={{display: "flex", justifyContent: "center", }}>
       {time.map((timeStamp, index) => {
         return (
-          <>
-            <div key={Math.random()}>
-              {timeStamp} {timeSuffix[index]}
+          <div style={{margin: "10px", paddingRight: "20px", fontSize: "45px"}}>
+            <div className="card" key={Math.random()}>
+              {timeStamp}
             </div>
-          </>
+            <span style={{fontSize: "25px"}}>{timeSuffix[index]}</span>
+          </div>
         );
       })}
     </div>
