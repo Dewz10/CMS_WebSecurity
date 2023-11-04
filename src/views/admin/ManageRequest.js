@@ -66,7 +66,7 @@ function ManageRequest() {
         }
   
         return (
-          <span className={`badge ${badgeClass}`} style={{fontSize: "12px"}}>{row.requestStatus}</span>
+          <span className={`badge ${badgeClass}`} style={{fontSize: "14px"}}>{row.requestStatus}</span>
         );
       },
     },
@@ -179,7 +179,7 @@ function ManageRequest() {
         }
   
         return (
-          <span className={`badge ${badgeClass}`} style={{fontSize: "12px"}}>{row.requestStatus}</span>
+          <span className={`badge ${badgeClass}`} style={{fontSize: "14px"}}>{row.requestStatus}</span>
         );
       },
     },
@@ -200,7 +200,7 @@ function ManageRequest() {
           )}{" "}
           <Link
             className="text-decoration-none btn btn-primary"
-            to={"/view/" + row.id}
+            to={"/viewcompanies/" + row.id}
           >
             <i className="fas fa-eye"></i>
           </Link>
