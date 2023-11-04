@@ -11,7 +11,11 @@ function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [isDisable,setIsDisable] = useState(false)
-  
+  function millisToMinutesAndSeconds(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + "." + (seconds < 10 ? '0' : '') + seconds;
+  }
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:3000/auth/login", {
@@ -56,6 +60,10 @@ function Login({ onLogin }) {
     } catch (error) {
       //console.log(error.response.status)
       if(error.response.status === 400) {
+        const date = new Date()
+        const suspendDate = new Date(error.response.data.message.time)
+        let millis = suspendDate.getTime() - date.getTime()
+        const time = millisToMinutesAndSeconds(millis)
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -70,7 +78,7 @@ function Login({ onLogin }) {
         
         Toast.fire({
           icon: 'error',
-          title: error.response.data.message
+          title: 'Too many attempts to Login, try again in '+time+' minutes'
         })
       }
       else {
