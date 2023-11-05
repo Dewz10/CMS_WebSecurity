@@ -7,6 +7,10 @@ import Swal from "sweetalert2";
 const AES = require('../../services/encrypt_decrypt')
 
 function Login({ onLogin }) {
+  const [formData,setFormData] = useState({
+    username: "",
+    password: ""
+  })
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -16,27 +20,33 @@ function Login({ onLogin }) {
     var seconds = ((millis % 60000) / 1000).toFixed(0);
     return minutes + "." + (seconds < 10 ? '0' : '') + seconds;
   }
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: AES.encrypt(e.target.value)
+    })
+  }
   const handleLogin = async () => {
     try {
-      const response = await axios.post("https://localhost:3000/auth/login", {
-        username,
-        password,
-      });
+      //const encryptBody = AES.encrypt(formData)
+      //console.log(encryptBody)
+      const response = await axios.post("https://localhost:3000/auth/login", formData);
       console.log(response.status)
 
       if (response.status === 200) {
-        const data = response.data;
+        const data = response.data.data;
         console.log(data)
-        const role = AES.decrypt(data.data.res.role);
-        let access_token = data.data.tokens.access_token;
+        const decrypted = JSON.parse(AES.decrypt(data));
+        let role = decrypted.plainUser.role
+        let access_token = decrypted.tokens.access_token
 
         // Store the JWT tokens securely in localStorage
         localStorage.setItem("access_token", access_token);
 
         // Ensure that access_token has been set before calling onLogin
         if (access_token !== null) {
-          console.log(data.data.res);
-          onLogin(role, data.data.res, access_token);
+  
+          onLogin(role, decrypted.plainUser, access_token);
         } else {
           console.error("Access token not received.");
         }
@@ -121,7 +131,8 @@ function Login({ onLogin }) {
             className="form-control"
             placeholder="Username"
             id="email_input"
-            onChange={(e) => setUsername(AES.encrypt(e.target.value))}
+            name='username'
+            onChange={handleChange}
           />
           <div className="input-group-append">
             <div className="input-group-text">
@@ -136,7 +147,8 @@ function Login({ onLogin }) {
             className="form-control"
             placeholder="Password"
             id="password_input"
-            onChange={(e) => setPassword(AES.encrypt(e.target.value))}
+            name="password"
+            onChange={handleChange}
           />
           <div className="input-group-append">
             <div className="input-group-text">
