@@ -26,7 +26,8 @@ function Login({ onLogin }) {
 
       if (response.status === 200) {
         const data = response.data;
-        const role = data.data.res.role;
+        console.log(data)
+        const role = AES.decrypt(data.data.res.role);
         let access_token = data.data.tokens.access_token;
 
         // Store the JWT tokens securely in localStorage
@@ -120,7 +121,7 @@ function Login({ onLogin }) {
             className="form-control"
             placeholder="Username"
             id="email_input"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUsername(AES.encrypt(e.target.value))}
           />
           <div className="input-group-append">
             <div className="input-group-text">
@@ -135,7 +136,7 @@ function Login({ onLogin }) {
             className="form-control"
             placeholder="Password"
             id="password_input"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(AES.encrypt(e.target.value))}
           />
           <div className="input-group-append">
             <div className="input-group-text">
