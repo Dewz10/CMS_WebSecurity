@@ -31,15 +31,17 @@ function CheckStatusCompany() {
   function showNisit() {}
   function handleDelete(companyId) {
     Swal.fire({
-      title: "ยืนยันที่จะลบ?",
-      text: "หากทำแล้วจะไม่สามารถย้อนกลับมาได้อีก",
+      title: "ยืนยันการลบ?",
+      text: "ไม่สามารถย้อนมาได้อีก",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
-      axios
+      if (result.isConfirmed) {
+        axios
           .delete("https://localhost:3000/internship/company-request/" + companyId, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -62,6 +64,7 @@ function CheckStatusCompany() {
               Swal.fire("ลบข้อมูลไม่สำเร็จ", "", "error");
             }
           });
+      }
     });
   }
   return (
