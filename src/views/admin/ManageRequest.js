@@ -245,7 +245,7 @@ function ManageRequest() {
       urlCompany = "https://localhost:3000/internship/company-request";
     } else {
       url = `https://localhost:3000/internship/request/application-round/${selectedAppId}`;
-      urlCompany = `https://localhost:3000/internship/company-request/application-round/${selectedAppId}`;
+      urlCompany = `https://localhost:3000/internship/company-request/application/${selectedAppId}`;
     }
   
     const axiosConfig = {
