@@ -245,7 +245,7 @@ function ManageRequest() {
       urlCompany = "https://localhost:3000/internship/company-request";
     } else {
       url = `https://localhost:3000/internship/request/application-round/${selectedAppId}`;
-      urlCompany = `https://localhost:3000/internship/company-request/${selectedAppId}`;
+      urlCompany = `https://localhost:3000/internship/company-request/application-round/${selectedAppId}`;
     }
   
     const axiosConfig = {
@@ -258,6 +258,7 @@ function ManageRequest() {
       .get(url, axiosConfig)
       .then((response) => {
         setData(response.data.data);
+        console.log(data)
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
