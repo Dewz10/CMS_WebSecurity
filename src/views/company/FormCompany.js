@@ -83,7 +83,9 @@ function FormCompany() {
       .then((res) => {
         console.log("Form submitted successfully", res.data);
         Swal.fire("ส่งคำร้องสำเร็จ", "", "success");
-        setTimeout(function () {}, 1500);
+        setTimeout(function () {
+          window.location.href = "/companystatus";
+        }, 1500);
       })
       .catch((err) => {
         console.error("Form submission error", err);

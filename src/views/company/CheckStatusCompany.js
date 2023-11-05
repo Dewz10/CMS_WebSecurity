@@ -161,7 +161,7 @@ function CheckStatusCompany() {
                             className={`text-decoration-none btn btn-sm btn-warning ${
                               isNotWaiting ? "disabled" : ""
                             }`}
-                            to={"/updateCom/" + btoa(data.id)}
+                            to={"/updatecompany/" + btoa(data.id)}
   
                           >
                             แก้ไข
@@ -175,7 +175,7 @@ function CheckStatusCompany() {
                           </button>
                           <Link
                             className={`text-decoration-none btn btn-sm btn-primary ml-1`}
-                            to={"/detailCom/" + btoa(data.id)}
+                            to={"/detailcompany/" + btoa(data.id)}
                           >
                             <i className="fas fa-eye"></i>
                           </Link>

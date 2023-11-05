@@ -228,8 +228,8 @@ function App() {
               <Route index element={<FormCompany />} />
               <Route path="comregisters" element={<FormCompany />} />
               <Route path="companystatus" element={<CheckStatusCompany />} />
-              <Route path="updateCom/:id" element={<UpdateFormCompany />} />
-              <Route path="detailCom/:id" element={<CheckDetailCompany />} />
+              <Route path="updatecompany/:id" element={<UpdateFormCompany />} />
+              <Route path="detailcompany/:id" element={<CheckDetailCompany />} />
               <Route
                 path="*"
                 element={<NotFound />}
